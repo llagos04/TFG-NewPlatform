@@ -1,8 +1,8 @@
 const colors = {
-  primary: "#F0F2F7",
+  primary: "#C2083F",
 
   gray100: "#F5F5F5",
-  gray200: "#EEEEEE",
+  gray200: "#F7F7F8",
   gray300: "#E0E0E0",
   gray400: "#BDBDBD",
   gray500: "#9E9E9E",

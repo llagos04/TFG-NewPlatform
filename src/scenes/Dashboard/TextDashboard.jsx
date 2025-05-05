@@ -8,7 +8,7 @@ const TextBoxDashboard = ({ title, text, height }) => {
       sx={{
         backgroundColor: colors.gray200,
         borderRadius: "1rem",
-        width: "100%",
+        width: "auto",
         height: height,
         display: "flex",
         flexDirection: "column",

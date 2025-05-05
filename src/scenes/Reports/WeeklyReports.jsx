@@ -179,13 +179,13 @@ export const WeeklyReports = () => {
             backgroundColor: isSelectedWeek
               ? "#FFCEDD"
               : isHoveredWeek
-              ? colors.grey[150]
+              ? colors.gray200
               : "inherit",
             color: outsideCurrentMonth
               ? "#7f7f83"
               : isSelectedWeek
-              ? colors.grey[700]
-              : colors.grey[700],
+              ? colors.gray700
+              : colors.gray700,
             borderRadius: isSelectedWeek || isHoveredWeek ? 0 : "8px",
             fontWeight: isSameMonth(day, visibleMonth) ? 700 : 400,
             p: 0,
@@ -250,7 +250,7 @@ export const WeeklyReports = () => {
               elevation={0}
               sx={{
                 borderRadius: "1rem",
-                border: `1px solid ${colors.grey[150]}`,
+                border: `1px solid ${colors.gray200}`,
               }}
             >
               <LocalizationProvider

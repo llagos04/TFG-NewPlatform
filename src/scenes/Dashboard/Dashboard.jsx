@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Typography,  Grid } from "@mui/material";
+import { Box, Typography, Grid } from "@mui/material";
 import colors from "../../styles/colors";
 import StatBox from "./StatBox";
 import PieChartDashboard from "./PieChartDashboard";
@@ -7,13 +7,13 @@ import ChartDashboard from "./ChartDashboard";
 import TextBoxDashboard from "./TextDashboard";
 
 export const Dashboard = () => {
-  
+  // Datos hardcodeados
   const receivedStats = {
-    total_threads: [82, "34%"], 
-    total_messages: [547, "48%"], 
-    messages_per_thread: [6.67, "10%"], 
-    aprox_time_saved: ["12:30", "25%"], 
-    leads_data: [19, "58%"], 
+    total_threads: [82, "34%"], // 34% más que el periodo anterior
+    total_messages: [547, "48%"], // aumento notable
+    messages_per_thread: [6.67, "10%"], // incremento moderado
+    aprox_time_saved: ["12:30", "25%"], // en formato h:mm
+    leads_data: [19, "58%"], // leads generados
     languages: {
       ES: 328,
       EN: 142,
@@ -50,16 +50,16 @@ export const Dashboard = () => {
   ];
 
   function obtenerMesesDelRango(data) {
-    
+    // Verificar si data es undefined o no es un array, devolver un string vacío en ese caso
     if (!Array.isArray(data) || data.length === 0) {
       return "";
     }
 
-    
+    // Obtener la primera y última fecha del arreglo
     const primerFecha = new Date(data[0].day);
     const ultimaFecha = new Date(data[data.length - 1].day);
 
-   
+    // Crear un array con los nombres de los meses en español
     const meses = [
       "Enero",
       "Febrero",
@@ -75,23 +75,23 @@ export const Dashboard = () => {
       "Diciembre",
     ];
 
-    
+    // Obtener el nombre del mes del primer y último elemento
     const primerMes = meses[primerFecha.getMonth()];
     const ultimoMes = meses[ultimaFecha.getMonth()];
 
-    
+    // Si ambos meses son iguales, devolver solo uno; si no, devolver ambos
     return primerMes === ultimoMes ? primerMes : `${primerMes} - ${ultimoMes}`;
   }
 
   return (
     <Box>
       {/* ---------------------- Grid de Estadísticas ---------------------- */}
-      <Grid container spacing={2}>
+      <Grid container spacing={0} sx={{ width: "100%" }}>
         {/* Stats + Idiomas + Gráfica */}
-        <Grid item xs={9}>
-          <Grid container spacing={2}>
+        <Grid item xs={9} sx={{ width: "100%" }}>
+          <Grid container spacing={2} sx={{ width: "100%" }}>
             {/* Stats */}
-            <Grid item xs={4} sx={{ height: "19.5rem" }}>
+            <Grid item xs={4} sx={{ height: "19.5rem", width: "100%" }}>
               <Box
                 sx={{
                   flex: 1,
@@ -99,6 +99,7 @@ export const Dashboard = () => {
                   flexDirection: "column",
                   gap: 2, // Espaciado interno entre los StatBox
                   height: "19.5rem",
+                  width: "100%",
                 }}
               >
                 <StatBox
@@ -121,7 +122,7 @@ export const Dashboard = () => {
                 />
               </Box>
             </Grid>
-            <Grid item xs={4} sx={{ height: "19.5rem" }}>
+            <Grid item xs={4} sx={{ height: "19.5rem", width: "100%" }}>
               <Box
                 sx={{
                   flex: 1,
@@ -156,11 +157,11 @@ export const Dashboard = () => {
               </Box>
             </Grid>
             {/* Idiomas */}
-            <Grid item xs={4}>
+            <Grid item xs={4} sx={{ width: "auto" }}>
               <Box
                 sx={{
-                  width: "100%",
-                  height: "100%",
+                  width: "auto",
+                  height: "19.5rem",
                 }}
               >
                 <PieChartDashboard
@@ -177,6 +178,7 @@ export const Dashboard = () => {
                   backgroundColor: colors.gray200,
                   borderRadius: "1rem",
                   pt: "1.25rem",
+                  width: "100%",
                 }}
               >
                 <Typography
@@ -208,6 +210,7 @@ export const Dashboard = () => {
             </Grid>
           </Grid>
         </Grid>
+        {/* Resumenes + Sugerencias */}
         <Grid
           item
           xs={3}
@@ -238,7 +241,8 @@ export const Dashboard = () => {
             <Grid item xs={12}>
               <Box
                 sx={{
-                  height: "33rem",
+                  height: "34rem",
+                  width: "auto",
                   backgroundColor: "#fff",
                   borderRadius: "1rem",
                   display: "flex",
@@ -273,5 +277,7 @@ export const Dashboard = () => {
         </Grid>
       </Grid>
     </Box>
+
+    // </RightContentContainer>
   );
 };

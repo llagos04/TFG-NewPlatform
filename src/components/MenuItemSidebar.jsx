@@ -45,7 +45,7 @@ export const MenuItemSideBar = ({
       <Box
         width="100%"
         margin="0.5rem 0rem"
-        padding="0.5rem 0rem"
+        padding="0.75rem 0rem"
         sx={{
           border: isSelected ? "1px solid rgba(0,0,0,0.1)" : null,
           backgroundColor,

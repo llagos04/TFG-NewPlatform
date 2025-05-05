@@ -115,7 +115,7 @@ export const DailyReports = () => {
           onMouseEnter={() => handleDayHover(day)}
           sx={{
             backgroundColor: isToday ? colors.primary : "inherit",
-            color: isToday ? "white" : colors.grey[700],
+            color: isToday ? "white" : colors.gray700,
             fontWeight: isSameMonth(day, selectedDate) ? 700 : 400,
             width: "2rem",
             height: "2rem",
@@ -161,7 +161,7 @@ export const DailyReports = () => {
               elevation={0}
               sx={{
                 borderRadius: "1rem",
-                border: `1px solid ${colors.grey[150]}`,
+                border: `1px solid ${colors.gray200}`,
                 p: 0,
                 display: "flex",
                 justifyContent: "center",

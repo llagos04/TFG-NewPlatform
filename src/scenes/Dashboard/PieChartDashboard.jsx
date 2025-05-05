@@ -81,8 +81,8 @@ const PieChartDashboard = ({
       sx={{
         backgroundColor: colors.gray200,
         borderRadius: "1rem",
-        width: "100%",
-        height: "19.5rem",
+        width: "auto",
+        height: "auto",
         padding: "1.25rem",
       }}
     >

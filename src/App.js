@@ -18,6 +18,7 @@ import Interactions from "./scenes/Interactions/Interactions";
 import { CustomTabs } from "./components/CustomTabs";
 import { WeeklyReports } from "./scenes/Reports/WeeklyReports";
 import { DailyReports } from "./scenes/Reports/DailyReports";
+import { NewDashboard } from "./scenes/Dashboard/NewDashboard";
 
 const PlatformPage = ({
   page,
@@ -32,63 +33,65 @@ const PlatformPage = ({
 }) => {
   return (
     <div className="app">
-      <Sidebar page={page} />
-      {/* <ChatBot id={"byneural"} /> */}
-      <Box
-        sx={{
-          height: "97vh",
-          flexGrow: 1,
-          padding: "1rem 1.75rem",
-          margin: "1.5vh 1.5vh 1.5vh 0rem",
-          zIndex: 1,
-          overflow: "hidden",
-          backgroundColor: "#ffffff",
-          borderRadius: "1rem",
-          border: "1px solid rgba(0, 0, 0, 0.1)",
-          boxShadow: "0px 0px 4px rgba(0, 0, 0, 0.05)",
-        }}
-      >
-        <div
-          style={{
-            // backgroundColor: 'rgba(0, 0, 0, 0.5)',
+      <Stack direction="row" height="100vh" width="100%">
+        <Sidebar page={page} />
+        <Box
+          sx={{
+            height: "93.5vh",
+            flexGrow: 1,
+            padding: "1rem 1.75rem",
+            margin: "1.5vh 1.5vh 1.5vh 0rem",
+            zIndex: 1,
             overflow: "hidden",
-            height: "100%",
-            marginTop: "0.625rem",
-            width: "100%",
+            backgroundColor: "#ffffff",
+            borderRadius: "1rem",
+            border: "1px solid rgba(0, 0, 0, 0.1)",
+            boxShadow: "0px 0px 4px rgba(0, 0, 0, 0.05)",
           }}
         >
-          <Stack spacing={4} height="100%" width="100%">
-            <Stack direction="row">
-              <Stack
-                width="50rem"
-                direction="row"
-                justifyContent="space-between"
-                alignItems="center"
-              >
-                <Typography
-                  sx={{
-                    fontFamily: "Inter",
-                    fontSize: "1.25rem",
-                    fontWeight: "600",
-                    color: colors.gray600,
-                  }}
+          <Box
+            sx={{
+              height: "100%",
+              display: "flex",
+              flexDirection: "column",
+              marginTop: "0.625rem",
+            }}
+          >
+            <Stack spacing={4} height="100%" width="100%">
+              <Stack direction="row">
+                <Stack
+                  width="50rem"
+                  direction="row"
+                  justifyContent="space-between"
+                  alignItems="center"
                 >
-                  {title}
-                </Typography>
+                  <Typography
+                    sx={{
+                      marginTop: "1rem",
+                      fontFamily: "Inter",
+                      fontSize: "1.5rem",
+                      fontWeight: "600",
+                      color: "#000",
+                    }}
+                  >
+                    {title}
+                  </Typography>
+                </Stack>
               </Stack>
+              {/* Contenido scrollable */}
+              <div
+                style={{
+                  height: "100%",
+                  overflow: "visible",
+                  paddingBottom: "0.5rem",
+                }}
+              >
+                <Outlet />
+              </div>
             </Stack>
-            <div
-              style={{
-                height: "100%",
-                overflow: isTabsPage ? "auto" : "visible",
-                paddingBottom: "0rem",
-              }}
-            >
-              <Outlet />
-            </div>
-          </Stack>
-        </div>
-      </Box>
+          </Box>
+        </Box>
+      </Stack>
     </div>
   );
 };
@@ -153,7 +156,6 @@ function App({ error }) {
         <ErrorPage errorMessage={error} />
       ) : (
         <Routes>
-          <Route index element={<Navigate to="estadisticas" replace />} />
           {/* ------------ Dashboard -------------------------*/}
           <Route
             path="/estadisticas"
@@ -202,7 +204,7 @@ function App({ error }) {
                     Diarios: "diarios",
                     Semanales: "semanales",
                   }}
-                  content={<WeeklyReports />}
+                  content={<DailyReports />}
                 />
               }
             />
@@ -215,12 +217,12 @@ function App({ error }) {
                     Diarios: "diarios",
                     Semanales: "semanales",
                   }}
-                  content={<DailyReports />}
+                  content={<WeeklyReports />}
                 />
               }
             />
           </Route>
-          <Route path="*" element={<Page404 />} /> {/* Página 404 */}
+          <Route path="*" element={<Navigate to="/estadisticas" replace />} />
         </Routes>
       )}
     </Router>

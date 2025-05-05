@@ -42,13 +42,14 @@ export const Sidebar = ({ page }) => {
           </div>
           {/* <Divider/> */}
           <div>
-            <Grid container spacing={0} width="100%" paddingX={"1.3rem"}>
+            <Grid container width="100%" paddingX={"1.3rem"}>
               <Grid item xs={12}>
                 <Box>
-                  <div
-                    style={{
+                  <Stack
+                    sx={{
                       paddingTop: "1rem",
                     }}
+                    spacing={0}
                   >
                     <MenuItemSideBar
                       icon={<PiChartLineUp fontSize="1.3rem" />}
@@ -78,7 +79,7 @@ export const Sidebar = ({ page }) => {
                       title_page="Informes"
                       onTabClick={handleTabClick}
                     />
-                  </div>
+                  </Stack>
                 </Box>
               </Grid>
             </Grid>
@@ -100,7 +101,7 @@ export const Sidebar = ({ page }) => {
             "& .MuiDrawer-paper": {
               width: `${drawerWidth}rem`,
               backgroundColor: "transparent",
-              borderRight: `1px solid ${colors.gray200}`,
+              borderRight: `1px solid transparent`,
             },
           }}
           open
