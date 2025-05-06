@@ -1,4 +1,10 @@
-import React, { useState, useCallback, useMemo, useRef } from "react";
+import React, {
+  useEffect,
+  useState,
+  useCallback,
+  useMemo,
+  useRef,
+} from "react";
 import { Box, Paper, Stack } from "@mui/material";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
@@ -18,152 +24,80 @@ import {
   pickersLayoutClasses,
   usePickerLayout,
 } from "@mui/x-date-pickers/PickersLayout";
-import colors from "../../styles/colors";
 
-const TabsRightContentContainer = ({ children, rightContent }) => {
-  return (
-    <Stack sx={{ mt: "-4.5rem" }}>
-      <Box
-        sx={{
-          width: "100%",
-          height: "3rem",
-          // backgroundColor: "rgba(255, 0, 0, 0.3)",
-          display: "flex", // Usamos flexbox
-          justifyContent: "flex-end", // Contenido alineado a la derecha
-          alignItems: "center",
-          alignContent: "center",
-          overflow: "hidden",
-          mb: "1.5rem",
-        }}
-      >
-        {rightContent}
-      </Box>
-      {children}
-    </Stack>
-  );
-};
+import colors from "../../styles/colors";
+import { ReportContent } from "./ReportContent";
 
 export const WeeklyReports = () => {
-  // --- Estado de selección de semana ---
   const today = new Date();
-  const initialStart = startOfWeek(today, { weekStartsOn: 1 });
-  const initialStr = format(initialStart, "yyyy-MM-dd", { locale: es });
-  const [selectedDate, setSelectedDate] = useState(initialStart);
-  const [selectedWeekStart, setSelectedWeekStart] = useState(initialStr);
-  const [visibleMonth, setVisibleMonth] = useState(initialStart);
+
+  const [selectedWeek, setSelectedWeek] = useState(null);
+  const [selectedWeekStart, setSelectedWeekStart] = useState(null);
+  const [selectedDate, setSelectedDate] = useState(today);
   const [hoveredWeek, setHoveredWeek] = useState(null);
   const lastHoveredDay = useRef(null);
+  const [isWeekSelectionMode, setIsWeekSelectionMode] = useState(false);
+  const [visibleMonth, setVisibleMonth] = useState(today);
+  const [monthChange, setMonthChange] = useState(false);
 
-  // --- Datos estáticos (métricas, topics, recomendaciones y acciones) ---
-  const weekInsight = {
-    metrics: {
-      conversations: 570,
-      messages: 864,
-      success: "87%",
-    },
-    topics: [
-      { title: "Políticas de equipaje", value: 15 },
-      { title: "Objetos prohibidos", value: 43 },
-      { title: "Información sobre terminales", value: 7 },
-      { title: "Puerta de embarque", value: 69 },
-      { title: "Normas de seguridad", value: 69 },
-      { title: "Tiempo estimado de espera", value: 1 },
-      { title: "Ayuda movilidad reducida", value: 15 },
-      { title: "Dónde comer/comprar", value: 43 },
-      { title: "Tiempo estimado de espera", value: 1 },
-      { title: "WiFi disponible", value: 7 },
-      { title: "Aparcamientos y precios", value: 69 },
-    ],
-    recommendations: [
-      "Incluir opciones de telescopios disponibles en tienda (ID: 1523).",
-      "Proporcionar un procedimiento para resolver pedidos incorrectos (ID: 1535).",
-      "Agregar información sobre tiendas en Madrid y su inventario (ID: 1537).",
-      "Incluir juguetes de coches específicos según rangos de edad (ID: 1553).",
-      "Añadir información sobre los horarios del servicio de transporte al centro de Atlanta.",
-      "Falta información sobre límites de peso para equipaje facturado con Delta Airlines.",
-      "Varios usuarios no encuentran el punto de atención al cliente.",
-      "Agregar información actualizada sobre restaurantes abiertos en la Terminal F.",
-      "Añadir protocolo de asistencia para menores no acompañados.",
-      "Varios usuarios preguntan por la clave del WiFi.",
-    ],
-    actions: [
-      "Incluir enlace directo para cancelar pedidos en el flujo de cancelación (ID: 1585).",
-      "Revisar respuestas imprecisas sobre la ubicación de las puertas de embarque B.",
-      "Mejorar la detección de audio en conversaciones en francés.",
-      "Baja tasa de satisfacción en consultas sobre objetos perdidos.",
-    ],
-    // (si tu InformeHTML necesita text_insights, puedes concatenar aquí un string con <li>…</li> o Markdown)
-    text_insights: null,
-  };
-
-  // --- Datos fijos para la gráfica de líneas ---
-  const receivedData = [
-    { day: "2025-03-01", total: 12 },
-    { day: "2025-03-02", total: 18 },
-    { day: "2025-03-03", total: 22 },
-    { day: "2025-03-04", total: 30 },
-    { day: "2025-03-05", total: 25 },
-    { day: "2025-03-06", total: 17 },
-    { day: "2025-03-07", total: 9 },
-    { day: "2025-03-08", total: 13 },
-    { day: "2025-03-09", total: 20 },
-    { day: "2025-03-10", total: 26 },
-    { day: "2025-03-11", total: 14 },
-    { day: "2025-03-12", total: 0 },
-    { day: "2025-03-13", total: 6 },
-    { day: "2025-03-14", total: 11 },
-    { day: "2025-03-15", total: 8 },
-    { day: "2025-03-16", total: 4 },
-    { day: "2025-03-17", total: 10 },
-    { day: "2025-03-18", total: 21 },
-    { day: "2025-03-19", total: 32 },
-    { day: "2025-03-20", total: 19 },
-    { day: "2025-03-21", total: 24 },
-  ];
-
-  // --- Handlers para cambio de semana y mes ---
   const handleWeekChange = useCallback((newDate) => {
+    // Calculamos el inicio (lunes) y el fin de la semana
     const start = startOfWeek(newDate, { weekStartsOn: 1 });
+    // const end = endOfWeek(newDate, { weekStartsOn: 1 }); // Ya no es necesario para la petición
+
+    // Formateamos la fecha del lunes
+    const formattedStartDate = format(start, "yyyy-MM-dd", { locale: es });
+    // const formattedEndDate = format(end, "yyyy-MM-dd", { locale: es });
+
     setSelectedDate(newDate);
-    setSelectedWeekStart(format(start, "yyyy-MM-dd", { locale: es }));
     setVisibleMonth(newDate);
+    setIsWeekSelectionMode(false);
+    // En lugar de pasar el fin de semana, pasamos el lunes
+    setSelectedWeek(formattedStartDate);
+    setSelectedWeekStart(formattedStartDate);
+    setMonthChange(false);
   }, []);
 
   const handleMonthChange = useCallback((newMonth) => {
     setVisibleMonth(newMonth);
     setSelectedDate(newMonth);
+    setIsWeekSelectionMode(false);
+    setMonthChange(false); // Asegurar que se resetee correctamente
     lastHoveredDay.current = null;
     setHoveredWeek(null);
   }, []);
 
-  const handleDayHover = useCallback((day) => {
-    if (!lastHoveredDay.current || !isSameDay(lastHoveredDay.current, day)) {
-      const start = startOfWeek(day, { weekStartsOn: 1 });
-      const end = endOfWeek(day, { weekStartsOn: 1 });
-      setHoveredWeek({ start, end });
-      lastHoveredDay.current = day;
-    }
-  }, []);
+  const handleDayHover = useCallback(
+    (day) => {
+      if (!lastHoveredDay.current || !isSameDay(lastHoveredDay.current, day)) {
+        const start = startOfWeek(day, { weekStartsOn: 1 });
+        const end = endOfWeek(day, { weekStartsOn: 1 });
+        setHoveredWeek({ start, end });
+        lastHoveredDay.current = day;
+      }
+    },
+    [hoveredWeek]
+  );
 
-  // --- Renderizado de cada día en bloque semanal ---
   const MyCustomDay = useMemo(() => {
     return React.forwardRef((props, ref) => {
       const { day, outsideCurrentMonth, ...other } = props;
+
       const isSelectedWeek =
         selectedDate &&
+        !monthChange &&
         isWithinInterval(day, {
           start: startOfWeek(selectedDate, { weekStartsOn: 1 }),
           end: endOfWeek(selectedDate, { weekStartsOn: 1 }),
         });
+
       const isHoveredWeek = hoveredWeek && isWithinInterval(day, hoveredWeek);
+
       const isStartOfWeek = isSameDay(
         day,
-        startOfWeek(selectedDate, { weekStartsOn: 1 })
+        startOfWeek(day, { weekStartsOn: 1 })
       );
-      const isEndOfWeek = isSameDay(
-        day,
-        endOfWeek(selectedDate, { weekStartsOn: 1 })
-      );
+      const isEndOfWeek = isSameDay(day, endOfWeek(day, { weekStartsOn: 1 }));
 
       return (
         <PickersDay
@@ -177,34 +111,53 @@ export const WeeklyReports = () => {
           onClick={() => handleWeekChange(day)}
           sx={{
             backgroundColor: isSelectedWeek
-              ? "#FFCEDD"
+              ? isStartOfWeek || isEndOfWeek
+                ? `${colors.primary} !important`
+                : `${"#FFCEDD"} !important`
               : isHoveredWeek
-              ? colors.gray200
+              ? isStartOfWeek || isEndOfWeek
+                ? `${colors.gray500} !important`
+                : colors.gray200
               : "inherit",
             color: outsideCurrentMonth
-              ? "#7f7f83"
+              ? isSelectedWeek || isHoveredWeek
+                ? isStartOfWeek || isEndOfWeek
+                  ? "white !important"
+                  : `${colors.gray700} !important`
+                : "#7f7f83 !important"
               : isSelectedWeek
-              ? colors.gray700
-              : colors.gray700,
-            borderRadius: isSelectedWeek || isHoveredWeek ? 0 : "8px",
-            fontWeight: isSameMonth(day, visibleMonth) ? 700 : 400,
-            p: 0,
-            m: 0,
-            width: "2rem",
-            height: "2rem",
+              ? isStartOfWeek || isEndOfWeek
+                ? "white !important"
+                : `${colors.gray700} !important`
+              : isHoveredWeek
+              ? isStartOfWeek || isEndOfWeek
+                ? "white !important"
+                : colors.gray700
+              : `${colors.gray700} !important`,
+            borderRadius:
+              isSelectedWeek || isHoveredWeek
+                ? isStartOfWeek
+                  ? "8px 0 0 8px !important"
+                  : isEndOfWeek
+                  ? "0 8px 8px 0 !important"
+                  : "0px !important"
+                : "8px",
+            "&:hover": {
+              backgroundColor: isHoveredWeek
+                ? isStartOfWeek || isEndOfWeek
+                  ? `${colors.gray500} !important`
+                  : colors.gray300
+                : colors.gray300,
+            },
+            fontWeight: isSameMonth(day, visibleMonth)
+              ? "bold"
+              : "400 !important",
           }}
         />
       );
     });
-  }, [
-    selectedDate,
-    hoveredWeek,
-    visibleMonth,
-    handleDayHover,
-    handleWeekChange,
-  ]);
+  }, [selectedDate, handleWeekChange, colors, visibleMonth, monthChange]);
 
-  // --- Layout del picker (sin bordes extra) ---
   function MyCustomLayout(props) {
     const { toolbar, content, actionBar } = usePickerLayout(props);
     return (
@@ -212,86 +165,121 @@ export const WeeklyReports = () => {
         className={pickersLayoutClasses.root}
         ownerState={props}
         sx={{
-          ".MuiDateCalendar-root": { p: 0, m: 0 },
-          ".MuiDayCalendar-slideTransition": { height: "14rem" },
-          ".MuiPickersDay-root": { borderRadius: "8px" },
+          minWidth: "0px !important",
+          ".MuiDateCalendar-root": {
+            width: "fit-content",
+            p: "0 1rem",
+            m: 0,
+            height: "fit-content",
+          },
+          ".MuiDayCalendar-slideTransition": {
+            height: "14rem",
+            minHeight: "auto",
+          },
+          ".MuiDayCalendar-weekDayLabel": {
+            width: "2rem",
+            m: 0,
+            color: "transparent",
+            mt: "-1rem",
+            height: "0 !important",
+          },
+          ".MuiPickersCalendarHeader-root": {
+            fontSize: "0.75rem",
+            fontFamily: "Inter, Arial, sans-serif",
+            width: "auto",
+            pr: 0,
+            pl: "0.5rem",
+          },
+          ".MuiTypography-h4": {
+            fontSize: "0.75rem",
+            fontFamily: "Inter, Arial, sans-serif",
+          },
+          ".MuiPickersCalendarHeader-label": {
+            fontSize: "0.75rem",
+            fontFamily: "Inter, Arial, sans-serif",
+          },
+          ".MuiPickersYear-yearButton": {
+            fontSize: "0.75rem",
+            fontFamily: "Inter, Arial, sans-serif",
+          },
+          ".MuiPickersDay-root": {
+            fontSize: "0.75rem",
+            fontFamily: "Inter, Arial, sans-serif",
+            fontWeight: 700,
+            color: colors.gray700,
+            p: 0,
+            m: 0,
+            width: "2rem",
+            height: "2rem",
+            borderRadius: "8px",
+          },
+
+          ".MuiPickersCalendarHeader-switchViewButton, .MuiPickersArrowSwitcher-button":
+            {
+              visibility: "visible !important",
+              opacity: "1 !important",
+            },
         }}
       >
         {toolbar}
-        <PickersLayoutContentWrapper>{content}</PickersLayoutContentWrapper>
+        <PickersLayoutContentWrapper
+          className={pickersLayoutClasses.contentWrapper}
+        >
+          {content}
+        </PickersLayoutContentWrapper>
         {actionBar}
       </PickersLayoutRoot>
     );
   }
 
-  // --- Fechas para el título ---
-  const startTitle = format(new Date(selectedWeekStart), "dd/MM/yyyy", {
-    locale: es,
-  });
-  const endTitle = format(
-    endOfWeek(new Date(selectedWeekStart), { weekStartsOn: 1 }),
-    "dd/MM/yyyy",
-    { locale: es }
-  );
-
   return (
-    <TabsRightContentContainer
-      rightContent={
+    <Box>
+      <Stack direction="row" spacing={4}>
         <Box width="fit-content">
-          {/* Aquí podrías poner un botón de exportar */}
-        </Box>
-      }
-    >
-      <Box>
-        <Stack direction="row" spacing={4}>
-          {/* Calendario estático */}
-          <Box width="fit-content">
-            <Paper
-              elevation={0}
-              sx={{
-                borderRadius: "1rem",
-                border: `1px solid ${colors.gray200}`,
-              }}
-            >
-              <LocalizationProvider
-                dateAdapter={AdapterDateFns}
-                adapterLocale={es}
-              >
-                <StaticDatePicker
-                  displayStaticWrapperAs="desktop"
-                  value={selectedDate}
-                  onChange={handleWeekChange}
-                  onMonthChange={handleMonthChange}
-                  minDate={new Date("2024-01-01")}
-                  maxDate={new Date("2026-12-31")}
-                  slots={{
-                    layout: MyCustomLayout,
-                    day: MyCustomDay,
-                  }}
-                  showDaysOutsideCurrentMonth
-                  reduceAnimations={false}
-                />
-              </LocalizationProvider>
-            </Paper>
-          </Box>
+          <Paper
+            sx={{
+              pb: "-1rem",
+              borderRadius: "1rem",
+              border: `1px solid ${colors.gray300}`,
 
-          {/* Informe hardcodeado */}
-          {/* <Box width="100%">
-            <Box
-              height="calc(100vh - 15rem)"
-              sx={{ overflow: "auto", width: "100%" }}
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+            elevation={0}
+          >
+            <LocalizationProvider
+              dateAdapter={AdapterDateFns}
+              adapterLocale={es}
             >
-              <InformeHTML
-                semana={`Semana ${startTitle} - ${endTitle}`}
-                data={{
-                  ...weekInsight,
-                  receivedData,
+              <StaticDatePicker
+                displayStaticWrapperAs="desktop"
+                label="Seleccione una semana"
+                value={selectedDate}
+                onChange={handleWeekChange}
+                onMonthChange={handleMonthChange}
+                minDate={new Date("2024-01-01")}
+                maxDate={new Date("2026-12-31")}
+                slots={{
+                  layout: MyCustomLayout,
+                  day: MyCustomDay,
+                }}
+                showDaysOutsideCurrentMonth={true}
+                reduceAnimations={false}
+                sx={{
+                  ".MuiPickersCalendarHeader-iconButton": {
+                    transition: "none", // Eliminar transiciones
+                  },
                 }}
               />
-            </Box>
-          </Box> */}
-        </Stack>
-      </Box>
-    </TabsRightContentContainer>
+            </LocalizationProvider>
+          </Paper>
+        </Box>
+
+        <Box flex={1} ml={4}>
+          <ReportContent isDaily={false}/>
+        </Box>
+      </Stack>
+    </Box>
   );
 };

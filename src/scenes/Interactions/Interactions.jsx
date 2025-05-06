@@ -13,7 +13,7 @@ import { MessagesContainer } from "../../assistant/MessagesContainer";
 import { CustomChip } from "../../components/CustomChip";
 
 import { useThreadsStats } from "../../hooks/useThreadsStats";
-import { fetchMessagesByThreadId } from "../../hooks/fetchMessagesByThreadId";
+import { fetchMessagesByThreadId } from "../../services/api";
 import { transformMessages } from "../../utils/transformMessages";
 
 export default function Conversaciones({ isConversations = true }) {

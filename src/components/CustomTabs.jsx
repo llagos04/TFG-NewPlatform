@@ -21,7 +21,7 @@ export const CustomTabs = ({ labels, onTabClick, tabSelected }) => {
         borderBottom: 1,
         borderColor: "divider",
         ".MuiTabs-indicator": {
-          backgroundColor: colors.primary500, // Color del borde de la tab seleccionada
+          backgroundColor: colors.primary, // Color del borde de la tab seleccionada
           height: "1px",
         },
         // mt: "-0.75rem",
@@ -49,7 +49,7 @@ export const CustomTabs = ({ labels, onTabClick, tabSelected }) => {
               fontWeight: 400,
               color: "black", // Color predeterminado para texto no seleccionado
               "&.Mui-selected": {
-                color: colors.primary500, // Color del texto cuando está seleccionado
+                color: colors.primary, // Color del texto cuando está seleccionado
               },
             }}
           />

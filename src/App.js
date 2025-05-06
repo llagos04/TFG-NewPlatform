@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import colors from "./styles/colors";
 import {
-  BrowserRouter as Router,
+  HashRouter as Router,
   Routes,
   Route,
   Outlet,
@@ -19,6 +19,7 @@ import { CustomTabs } from "./components/CustomTabs";
 import { WeeklyReports } from "./scenes/Reports/WeeklyReports";
 import { DailyReports } from "./scenes/Reports/DailyReports";
 import { NewDashboard } from "./scenes/Dashboard/NewDashboard";
+import { MainWidget } from "./assistant/MainWidget";
 
 const PlatformPage = ({
   page,
@@ -78,7 +79,7 @@ const PlatformPage = ({
                   </Typography>
                 </Stack>
               </Stack>
-              {/* Contenido scrollable */}
+              {/* Scrollable content */}
               <div
                 style={{
                   height: "100%",
@@ -102,7 +103,6 @@ const TabsContent = ({ tab, tabsList, content }) => {
 
   const filteredTabsList = Object.keys(tabsList).reduce((acc, key) => {
     acc[key] = tabsList[key];
-
     return acc;
   }, {});
 
@@ -116,36 +116,25 @@ const TabsContent = ({ tab, tabsList, content }) => {
           setUpdate(update + 1);
         }}
       />
-      {/* <AnimatedDiv triggerUpdate={update}> */}
-      <div
-        style={{
-          height: "100%",
-          //  overflow: "auto",
-        }}
-      >
-        {" "}
-        {content}
-      </div>
-
-      {/* </AnimatedDiv> */}
+      <div style={{ height: "100%" }}>{content}</div>
     </Stack>
   );
 };
 
 function App({ error }) {
   const routingPages = {
-    interacciones: {
-      name: "Interacciones",
+    interactions: {
+      name: "Interactions",
     },
-    estadisticas: {
-      name: "Estadísticas",
+    statistics: {
+      name: "Statistics",
       subpages: {},
     },
-    informes: {
-      name: "Informes",
+    reports: {
+      name: "Reports",
       subpages: {
-        diarios: "Diarios",
-        semanales: "Semanales",
+        daily: "daily",
+        weekly: "weekly",
       },
     },
   };
@@ -156,6 +145,10 @@ function App({ error }) {
         <ErrorPage errorMessage={error} />
       ) : (
         <Routes>
+          {/* ------------ Assistant -------------------------*/}
+          <Route path="/assistant">
+            <Route path="" element={<MainWidget />} />
+          </Route>
           {/* ------------ Dashboard -------------------------*/}
           <Route
             path="/dashboard"
@@ -169,6 +162,7 @@ function App({ error }) {
           >
             <Route path="" element={<Dashboard />} />
           </Route>
+
           {/* ------------ Interactions -------------------------*/}
           <Route
             path="/interactions"
@@ -182,6 +176,7 @@ function App({ error }) {
           >
             <Route path="" element={<Interactions />} />
           </Route>
+
           {/* ------------ Reports -------------------------*/}
           <Route
             path="/reports"
@@ -201,8 +196,8 @@ function App({ error }) {
                 <TabsContent
                   tab="Daily"
                   tabsList={{
-                    Diarios: "daily",
-                    Semanales: "weekly",
+                    Daily: "daily",
+                    Weekly: "weekly",
                   }}
                   content={<DailyReports />}
                 />
@@ -214,14 +209,16 @@ function App({ error }) {
                 <TabsContent
                   tab="Weekly"
                   tabsList={{
-                    Diarios: "daily",
-                    Semanales: "weekly",
+                    Daily: "daily",
+                    Weekly: "weekly",
                   }}
                   content={<WeeklyReports />}
                 />
               }
             />
           </Route>
+
+          {/* ------------ Fallback -------------------------*/}
           <Route path="*" element={<Navigate to="/dashboard" replace />} />
         </Routes>
       )}

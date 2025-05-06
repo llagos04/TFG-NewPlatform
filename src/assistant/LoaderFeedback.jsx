@@ -1,54 +1,31 @@
 import React, { useState, useEffect } from "react";
 import { PiGear, PiMagnifyingGlass } from "react-icons/pi";
 
-const LoaderFeedback = ({ uiConfig, language = "EN" }) => {
+const LoaderFeedback = () => {
   const [isSearching, setIsSearching] = useState(true);
   const [popClass, setPopClass] = useState("popIn");
   const [textOpacity, setTextOpacity] = useState(1);
-  const [displayText, setDisplayText] = useState("Analizando...");
-
-  const textMappings = {
-    "Analizando...": {
-      EN: "Analyzing...",
-      ES: "Analizando...",
-      FR: "Analyse en cours...",
-      IT: "Analizzando...",
-      CA: "Analitzant...",
-      PT: "Analisando...",
-    },
-    "Buscando información...": {
-      EN: "Searching for information...",
-      ES: "Buscando información...",
-      FR: "Recherche d'informations...",
-      IT: "Cercando informazioni...",
-      CA: "Cercant informació...",
-      PT: "Procurando informações...",
-    },
-  };
+  const [displayText, setDisplayText] = useState("Analyzing...");
 
   useEffect(() => {
     const interval = setInterval(() => {
-      // 1. Fade out del texto
+      // 1. Fade out del texto y pop out del icono
       setTextOpacity(0);
-
-      // 2. Pop out del icono
       setPopClass("popOut");
 
       setTimeout(() => {
-        // 3. Cambio de estado isSearching
+        // 2. Alternar estado
         setIsSearching((prev) => !prev);
-
-        // 4. Actualizar texto según el estado
+        // 3. Cambiar el texto
         setDisplayText((prev) =>
-          prev === "Analizando..." ? "Buscando información..." : "Analizando..."
+          prev === "Analyzing..."
+            ? "Searching for information..."
+            : "Analyzing..."
         );
-
-        // 5. Pop in del icono
+        // 4. Pop in del icono y fade in del texto
         setPopClass("popIn");
-
-        // 6. Fade in del texto
         setTextOpacity(1);
-      }, 500); // Este timeout coincide con la duración del popOut
+      }, 500); // coincide con la duración de popOut
     }, 4000);
 
     return () => clearInterval(interval);
@@ -153,9 +130,7 @@ const LoaderFeedback = ({ uiConfig, language = "EN" }) => {
           transition: "opacity 0.25s ease-in-out",
         }}
       >
-        {uiConfig.multilanguage && language
-          ? textMappings[displayText][language]
-          : textMappings[displayText]["ES"]}
+        {displayText}
       </span>
 
       <style>{`
@@ -163,12 +138,10 @@ const LoaderFeedback = ({ uiConfig, language = "EN" }) => {
           0% { stroke-dashoffset: 101; }
           100% { stroke-dashoffset: 0; }
         }
-
         @keyframes textShineLinear {
           0% { background-position: 100% 0; }
           100% { background-position: -100% 0; }
         }
-
         @keyframes gearBurst {
           0% { transform: rotate(0deg); }
           15% { transform: rotate(0deg); }
@@ -178,7 +151,6 @@ const LoaderFeedback = ({ uiConfig, language = "EN" }) => {
           90% { transform: rotate(720deg); }
           100% { transform: rotate(720deg); }
         }
-
         @keyframes swayIcon {
           0% { transform: translate(0, 0); }
           25% { transform: translate(1px, -1px); }
@@ -186,7 +158,6 @@ const LoaderFeedback = ({ uiConfig, language = "EN" }) => {
           75% { transform: translate(1px, -1px); }
           100% { transform: translate(0, 0); }
         }
-
         @keyframes popIn {
           0% { transform: scale(0); opacity: 1; }
           25% { transform: scale(1.25); opacity: 1; }
@@ -194,7 +165,6 @@ const LoaderFeedback = ({ uiConfig, language = "EN" }) => {
           75% { transform: scale(1.05); opacity: 1; }
           100% { transform: scale(1); opacity: 1; }
         }
-
         @keyframes popOut {
           0% { transform: scale(1); opacity: 1; }
           25% { transform: scale(1.05); opacity: 1; }
@@ -202,11 +172,9 @@ const LoaderFeedback = ({ uiConfig, language = "EN" }) => {
           75% { transform: scale(1.25); opacity: 1; }
           100% { transform: scale(0); opacity: 1; }
         }
-
         .pop-wrapper.popIn {
           animation: popIn 0.5s ease forwards;
         }
-
         .pop-wrapper.popOut {
           animation: popOut 0.5s ease forwards;
         }
