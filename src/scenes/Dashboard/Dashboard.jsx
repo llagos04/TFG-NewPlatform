@@ -5,15 +5,16 @@ import StatBox from "./StatBox";
 import PieChartDashboard from "./PieChartDashboard";
 import ChartDashboard from "./ChartDashboard";
 import TextBoxDashboard from "./TextDashboard";
+import { useDashboardStats } from "../../hooks/useDashboardStats";
 
 export const Dashboard = () => {
-  // Datos hardcodeados
+  // Hardcoded stats data
   const receivedStats = {
-    total_threads: [82, "34%"], // 34% más que el periodo anterior
-    total_messages: [547, "48%"], // aumento notable
-    messages_per_thread: [6.67, "10%"], // incremento moderado
-    aprox_time_saved: ["12:30", "25%"], // en formato h:mm
-    leads_data: [19, "58%"], // leads generados
+    total_threads: [82, "34%"],
+    total_messages: [547, "48%"],
+    messages_per_thread: [6.67, "10%"],
+    aprox_time_saved: ["12:30", "25%"],
+    leads_data: [19, "58%"],
     languages: {
       ES: 328,
       EN: 142,
@@ -49,45 +50,44 @@ export const Dashboard = () => {
     { day: "2025-03-21", total: 24 },
   ];
 
-  function obtenerMesesDelRango(data) {
-    // Verificar si data es undefined o no es un array, devolver un string vacío en ese caso
+  const { stats: receivedStats2, loading } = useDashboardStats();
+
+  function getMonthRangeLabel(data) {
     if (!Array.isArray(data) || data.length === 0) {
       return "";
     }
 
-    // Obtener la primera y última fecha del arreglo
-    const primerFecha = new Date(data[0].day);
-    const ultimaFecha = new Date(data[data.length - 1].day);
+    const firstDate = new Date(data[0].day);
+    const lastDate = new Date(data[data.length - 1].day);
 
-    // Crear un array con los nombres de los meses en español
-    const meses = [
-      "Enero",
-      "Febrero",
-      "Marzo",
-      "Abril",
-      "Mayo",
-      "Junio",
-      "Julio",
-      "Agosto",
-      "Septiembre",
-      "Octubre",
-      "Noviembre",
-      "Diciembre",
+    const months = [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
     ];
 
-    // Obtener el nombre del mes del primer y último elemento
-    const primerMes = meses[primerFecha.getMonth()];
-    const ultimoMes = meses[ultimaFecha.getMonth()];
+    const firstMonth = months[firstDate.getMonth()];
+    const lastMonth = months[lastDate.getMonth()];
 
-    // Si ambos meses son iguales, devolver solo uno; si no, devolver ambos
-    return primerMes === ultimoMes ? primerMes : `${primerMes} - ${ultimoMes}`;
+    return firstMonth === lastMonth
+      ? firstMonth
+      : `${firstMonth} - ${lastMonth}`;
   }
 
   return (
     <Box>
-      {/* ---------------------- Grid de Estadísticas ---------------------- */}
+      {/* ---------------------- Stats Grid ---------------------- */}
       <Grid container spacing={0} sx={{ width: "100%" }}>
-        {/* Stats + Idiomas + Gráfica */}
+        {/* Stats + Languages + Chart */}
         <Grid item xs={9} sx={{ width: "100%" }}>
           <Grid container spacing={2} sx={{ width: "100%" }}>
             {/* Stats */}
@@ -97,14 +97,14 @@ export const Dashboard = () => {
                   flex: 1,
                   display: "flex",
                   flexDirection: "column",
-                  gap: 2, // Espaciado interno entre los StatBox
+                  gap: 2,
                   height: "19.5rem",
                   width: "100%",
                 }}
               >
                 <StatBox
-                  stat={receivedStats ? receivedStats.total_messages[0] : 0}
-                  title="Número de mensajes"
+                  stat={receivedStats2 ? receivedStats2.total_messages[0] : 0}
+                  title="Number of messages"
                   percentage={
                     receivedStats ? receivedStats.total_messages[1] : 0
                   }
@@ -112,9 +112,9 @@ export const Dashboard = () => {
                 />
                 <StatBox
                   stat={
-                    receivedStats ? receivedStats.messages_per_thread[0] : 0
+                    receivedStats2 ? receivedStats2.messages_per_thread[0] : 0
                   }
-                  title="Mensajes por conversación"
+                  title="Messages per conversation"
                   percentage={
                     receivedStats ? receivedStats.messages_per_thread[1] : 0
                   }
@@ -128,13 +128,13 @@ export const Dashboard = () => {
                   flex: 1,
                   display: "flex",
                   flexDirection: "column",
-                  gap: 2, // Espaciado interno entre los StatBox
+                  gap: 2,
                   height: "19.5rem",
                 }}
               >
                 <StatBox
-                  stat={receivedStats ? receivedStats.total_threads[0] : 0}
-                  title="Número de conversaciones"
+                  stat={receivedStats2 ? receivedStats2.total_threads[0] : 0}
+                  title="Number of conversations"
                   iconSize={"1.4rem"}
                   percentage={
                     receivedStats ? receivedStats.total_threads[1] : 0
@@ -143,11 +143,11 @@ export const Dashboard = () => {
                 />
                 <StatBox
                   stat={
-                    receivedStats
-                      ? receivedStats.aprox_time_saved[0] + " h"
+                    receivedStats2
+                      ? receivedStats2.aprox_time_saved[0] + " h"
                       : "00:00"
                   }
-                  title="Tiempo ahorrado"
+                  title="Time saved"
                   iconSize={"1.4rem"}
                   percentage={
                     receivedStats ? receivedStats.aprox_time_saved[1] : 0
@@ -156,7 +156,7 @@ export const Dashboard = () => {
                 />
               </Box>
             </Grid>
-            {/* Idiomas */}
+            {/* Languages */}
             <Grid item xs={4} sx={{ width: "auto" }}>
               <Box
                 sx={{
@@ -170,7 +170,7 @@ export const Dashboard = () => {
                 />
               </Box>
             </Grid>
-            {/* Gráfica */}
+            {/* Message Chart */}
             <Grid item xs={12}>
               <Box
                 sx={{
@@ -185,20 +185,18 @@ export const Dashboard = () => {
                   sx={{
                     fontFamily: "Inter",
                     fontSize: "0.875rem",
-                    color: "#000",
-                    textAlign: "center", // Centra el título
-                    marginBottom: "1rem", // Añade un margen inferior para separar el título del gráfico
+                    color: colors.gray800,
+                    textAlign: "center",
+                    marginBottom: "1rem",
                   }}
                 >
-                  Número de mensajes:{" "}
+                  Number of messages:{" "}
                   <span style={{ fontWeight: "bold" }}>
-                    {obtenerMesesDelRango(receivedData)}
+                    {getMonthRangeLabel(receivedData)}
                   </span>
                 </Typography>
                 <Box
-                  padding={{
-                    xs: "1rem 3rem 3rem 0rem",
-                  }}
+                  padding={{ xs: "1rem 3rem 3rem 0rem" }}
                   sx={{ height: "100%" }}
                 >
                   <ChartDashboard
@@ -210,14 +208,13 @@ export const Dashboard = () => {
             </Grid>
           </Grid>
         </Grid>
-        {/* Resumenes + Sugerencias */}
+        {/* Summary + Suggestions */}
         <Grid
           item
           xs={3}
           sx={{
             display: "flex",
             flexDirection: "column",
-
             justifyContent: "space-between",
           }}
         >
@@ -231,7 +228,7 @@ export const Dashboard = () => {
               >
                 <StatBox
                   stat={receivedStats ? receivedStats.success[0] : 0}
-                  title="Mensajes por conversación"
+                  title="Success rate"
                   percentage={receivedStats ? receivedStats.success[1] : 0}
                   isPositive={false}
                 />
@@ -252,22 +249,40 @@ export const Dashboard = () => {
                 }}
               >
                 <TextBoxDashboard
-                  title={"Cambios y modificaciones sugeridas"}
+                  title={"Suggested changes and improvements"}
                   text={
-                    <>
-                      Añadir información sobre los horarios del servicio de
-                      transporte al centro de Atlanta. Revisar respuestas
-                      imprecisas sobre la ubicación de las puertas de embarque
-                      B. Mejorar la detección de audio en conversaciones en
-                      francés. Falta información sobre límites de peso para
-                      equipaje facturado con Delta Airlines. Varios usuarios no
-                      encuentran el punto de atención al cliente Baja tasa de
-                      satisfacción en consultas sobre objetos perdidos. Añadir
-                      información actualizada sobre restaurantes abiertos en la
-                      Terminal F. Añadir protocolo de asistencia para menores no
-                      acompañados. Varios usuarios preguntan por la clave del
-                      WiFi - agregar información clara.
-                    </>
+                    <ul style={{ paddingLeft: "1.25rem", margin: 0 }}>
+                      <li>
+                        Add information about the shuttle service schedule to
+                        downtown Atlanta.
+                      </li>
+                      <li>
+                        Review inaccurate responses regarding the location of
+                        Gate B.
+                      </li>
+                      <li>Improve audio detection in French conversations.</li>
+                      <li>
+                        Missing information about baggage weight limits for
+                        Delta Airlines.
+                      </li>
+                      <li>
+                        Several users cannot find the customer service desk.
+                      </li>
+                      <li>
+                        Low satisfaction rate in lost and found inquiries.
+                      </li>
+                      <li>
+                        Add updated information about open restaurants in
+                        Terminal F.
+                      </li>
+                      <li>
+                        Include assistance protocol for unaccompanied minors.
+                      </li>
+                      <li>
+                        Several users ask for the WiFi password – add clear
+                        information.
+                      </li>
+                    </ul>
                   }
                   height={"100%"}
                 />
@@ -277,7 +292,5 @@ export const Dashboard = () => {
         </Grid>
       </Grid>
     </Box>
-
-    // </RightContentContainer>
   );
 };

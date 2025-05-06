@@ -10,7 +10,7 @@ export const ConversationSkeleton = () => {
       height={"75vh"}
       width={"100%"}
       sx={{
-        overflowY: "auto",
+        overflow: "hidden",
         border: `1px solid ${colors.gray200}`,
         borderRadius: "0.75rem",
       }}

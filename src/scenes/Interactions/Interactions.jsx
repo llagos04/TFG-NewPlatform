@@ -12,134 +12,59 @@ import { ConversationSkeleton } from "./ConversationSkeleton";
 import { MessagesContainer } from "../../assistant/MessagesContainer";
 import { CustomChip } from "../../components/CustomChip";
 
+import { useThreadsStats } from "../../hooks/useThreadsStats";
+import { fetchMessagesByThreadId } from "../../hooks/fetchMessagesByThreadId";
+import { transformMessages } from "../../utils/transformMessages";
+
 export default function Conversaciones({ isConversations = true }) {
-  const [refresh, setRefresh] = useState(0);
   const [selectedThread, setSelectedThread] = useState(null);
-  const [shouldGetMessages, setShouldGetMessages] = useState(false);
-  const [isLoading, setIsLoading] = useState(true); // Para el área de chat
+  const [isLoading, setIsLoading] = useState(true);
   const messageContainerRef = useRef(null);
 
-  // ------------------ Paginación en el Data Grid ------------------
-  // MUI usa 0-based para page, mientras que tu backend es 1-based
   const [paginationModel, setPaginationModel] = useState({
     page: 0,
     pageSize: 100,
   });
 
-  // Guardamos el total de hilos disponibles
   const rowCountRef = useRef(0);
-
-  // threadsInfo: datos reales obtenidos de /threads
   const [threadsInfo, setThreadsInfo] = useState([]);
-
-  // Manejo de mensajes (lado derecho)
   const [messagesWithoutRecomendQuestion, setMessagesWithoutRecomendQuestion] =
     useState([]);
 
-  // ------------------------------------------------------------------
-  // 1) Llamada al backend para obtener la lista de hilos paginados
-  // ------------------------------------------------------------------
-  // const fetchThreads = useCallback(async () => {
-  //   try {
-  //     const url =
-  //       `/threads/?tenant_id=${user.selectedTenant.tenant_id}` +
-  //       `&page=${paginationModel.page + 1}` + // backend 1-based
-  //       `&page_size=${paginationModel.pageSize}`;
-  //     const { data } = await apiClient.get(
-  //       url,
-  //       { opened: true },
-  //       { headers: {} }
-  //     );
+  const { threads, loading: gridLoading } = useThreadsStats();
 
-  //     if (data?.results) {
-  //       // Guardamos la data real en threadsInfo
-  //       const updatedData = data.results.map((item) => ({
-  //         ...item,
-  //         ID: item.id, // Mantienes la misma key si la usas en otro sitio
-  //       }));
-  //       setThreadsInfo(updatedData);
-  //       handleSelectedThread(data.results[0].id);
-  //       // rowCount (el total de hilos)
-  //       if (typeof data.count === "number") {
-  //         rowCountRef.current = data.count;
-  //       }
-  //     }
-  //   } catch (err) {
-  //     console.error("Error al obtener los hilos:", err);
-  //   }
-  // }, [
-  //   paginationModel.page,
-  //   paginationModel.pageSize,
-  //   user.selectedTenant.tenant_id,
-  // ]);
+  useEffect(() => {
+    if (!gridLoading && threads.length > 0) {
+      setThreadsInfo(threads);
+    }
+    const sorted = [...threads].sort(
+      (a, b) => new Date(b.created_at) - new Date(a.created_at)
+    );
+
+    if (!selectedThread && sorted[0]) {
+      handleSelectedThread(sorted[0].id);
+    }
+  }, [threads, gridLoading]);
 
   const handleSelectedThread = async (id) => {
     setSelectedThread(id);
-    // Verificamos si el thread no está abierto y debemos actualizarlo
-    const threadEncontrado = threadsInfo.find((thread) => thread.id === id);
-    if (threadEncontrado && !threadEncontrado.opened) {
-    }
-    setShouldGetMessages(true);
-  };
+    setIsLoading(true);
 
-  // const { data: receivedMessages } = getData(
-  //   "/messages/?thread_id=" + (selectedThread || 0),
-  //   shouldGetMessages && interceptorReady,
-  //   null,
-  //   refresh
-  // );
+    const rawMessages = await fetchMessagesByThreadId(id);
+    console.log("🧾 RAW THREAD DATA", rawMessages);
 
-  const receivedMessages = null;
+    const uiMessages = transformMessages(rawMessages || []);
+    console.log("🧩 Conversación transformada para UI:", uiMessages);
 
-  // Cuando lleguen los mensajes, procesarlos
-  useEffect(() => {
-    if (typeof receivedMessages === "undefined") {
-      // Aún no han llegado => mantenemos isLoading del chat
-      return;
-    }
-
-    if (!receivedMessages || !receivedMessages.messages) {
-      setMessagesWithoutRecomendQuestion([]);
-      setIsLoading(false);
-      return;
-    }
-
-    // Procesar para quitar "Recomend Question"
-    const updatedMessages = receivedMessages.messages.map((message, index) => {
-      const updatedActions = message.actions?.filter(
-        (action) => action.action_type !== "Recomend Question"
-      );
-      if (index === 0) {
-        const updatedActionsWithoutFirstMessages = updatedActions?.filter(
-          (action) => action.action_type !== "Custom Response"
-        );
-        return { ...message, actions: updatedActionsWithoutFirstMessages };
-      }
-      return { ...message, actions: updatedActions };
-    });
-
-    setMessagesWithoutRecomendQuestion(updatedMessages);
+    setMessagesWithoutRecomendQuestion(uiMessages);
     setIsLoading(false);
-  }, [receivedMessages]);
+  };
 
   const rowSkeletons = useMemo(() => {
     return Array.from({ length: paginationModel.pageSize }, (_, i) => ({
       id: `skeleton-${i}`,
     }));
   }, [paginationModel.pageSize]);
-
-  const [gridLoading, setGridLoading] = useState(false);
-
-  // useEffect(() => {
-  //   let isMounted = true;
-  //   setGridLoading(true);
-  //   fetchThreads().finally(() => {
-  //     if (isMounted) setGridLoading(false);
-  //   });
-  //   return () => {
-  //     isMounted = false;
-  //   };
-  // }, [paginationModel.page, paginationModel.pageSize, refresh]);
 
   const columnsDataGrid = useMemo(() => {
     return [
@@ -186,7 +111,7 @@ export default function Conversaciones({ isConversations = true }) {
       },
       {
         field: "created_at",
-        headerName: "Fecha",
+        headerName: "Date",
         flex: 0.2,
         renderCell: (params) => {
           if (String(params.row.id).startsWith("skeleton-")) {
@@ -227,7 +152,7 @@ export default function Conversaciones({ isConversations = true }) {
                   sx={{
                     fontFamily: "Inter",
                     fontSize: "0.75rem",
-                    fontWeight: 600,
+                    color: colors.gray600,
                   }}
                 >
                   {timeWithoutSeconds}
@@ -236,7 +161,7 @@ export default function Conversaciones({ isConversations = true }) {
                   sx={{
                     fontFamily: "Inter",
                     fontSize: "0.75rem",
-                    fontWeight: 600,
+                    color: colors.gray600,
                   }}
                 >
                   {formattedDate}
@@ -248,7 +173,7 @@ export default function Conversaciones({ isConversations = true }) {
       },
       {
         field: "language",
-        headerName: "Idioma",
+        headerName: "Language",
         flex: 0.2,
         renderCell: (params) => {
           if (String(params.row.id).startsWith("skeleton-")) {
@@ -280,7 +205,7 @@ export default function Conversaciones({ isConversations = true }) {
                 sx={{
                   fontFamily: "Inter",
                   fontSize: "0.75rem",
-                  fontWeight: 600,
+                  color: colors.gray600,
                 }}
               >
                 {params.value}
@@ -291,7 +216,7 @@ export default function Conversaciones({ isConversations = true }) {
       },
       {
         field: "messages_count",
-        headerName: "Mensajes",
+        headerName: "Messages",
         flex: 0.2,
         renderCell: (params) => {
           if (String(params.row.id).startsWith("skeleton-")) {
@@ -325,8 +250,8 @@ export default function Conversaciones({ isConversations = true }) {
               <Typography
                 sx={{
                   fontFamily: "Inter",
-                  fontSize: "0.75rem",
-                  fontWeight: 600,
+                  fontSize: "0.875rem",
+                  color: colors.gray600,
                 }}
               >
                 {params.value}
@@ -337,7 +262,7 @@ export default function Conversaciones({ isConversations = true }) {
       },
       {
         field: "insights",
-        headerName: "Resumen",
+        headerName: "Summary",
         flex: 1,
         renderCell: (params) => {
           if (String(params.row.id).startsWith("skeleton-")) {
@@ -399,8 +324,8 @@ export default function Conversaciones({ isConversations = true }) {
               <Typography
                 sx={{
                   fontFamily: "Inter",
-                  fontSize: "0.75rem",
-                  fontWeight: 600,
+                  fontSize: "0.875rem",
+                  color: colors.gray600,
                 }}
               >
                 {resumen}
@@ -413,118 +338,65 @@ export default function Conversaciones({ isConversations = true }) {
   }, [handleSelectedThread]);
 
   // Seleccionamos filas finales: si estamos cargando en este fetch => skeletons
-  const finalRows = gridLoading ? rowSkeletons : threadsInfo;
+  const finalRows = useMemo(() => {
+    if (gridLoading) return rowSkeletons;
 
-  // Manejo de la paginación (server side) en Data Grid
-  const handlePaginationModelChange = (newModel) => {
-    // resetear la página a 0 si cambia el pageSize
-    if (newModel.pageSize !== paginationModel.pageSize) {
-      newModel.page = 0;
-    }
-    setPaginationModel(newModel);
-  };
-
-  // ------------------------------------------------------------------
-  // 7) Render principal: DataGrid (paginado) a la izquierda, chat a la derecha
-  // ------------------------------------------------------------------
+    return [...threads].sort(
+      (a, b) => new Date(b.created_at) - new Date(a.created_at)
+    );
+  }, [threads, gridLoading, rowSkeletons]);
 
   return (
     <Box>
       <Grid container spacing={2}>
-        {/* ------------------ Tabla de Datos (con paginación) --------------------- */}
         <Grid item xs={8}>
-          <Box
-            sx={{
-              boxSizing: "border-box",
-              padding: "0",
-              outline: "none",
-              width: "100%",
-              height: "80vh", // Ajusta a tu gusto
-              fontSize: "0.875rem",
-              pb: "1rem",
-            }}
-          >
+          <Box sx={{ height: "80vh" }}>
             <DataGrid
-              onRowClick={(params) => handleSelectedThread(params.id)}
-              // Filas (reales o skeleton)
               rows={finalRows}
               columns={columnsDataGrid}
-              // Ajustes de estilos heredados
               rowHeight={55}
               disableColumnMenu
               hideFooterSelectedRowCount
-              // Ahora SÍ usamos footer para la paginación server side
               paginationMode="server"
               paginationModel={paginationModel}
-              onPaginationModelChange={handlePaginationModelChange}
               rowCount={rowCountRef.current}
               pageSizeOptions={[5, 10, 25, 50, 100]}
-              // Slots y overlays
+              rowSelectionModel={selectedThread ? [selectedThread] : []}
+              onRowClick={(params) => handleSelectedThread(params.id)}
               slots={{
                 noRowsOverlay: () => (
                   <CustomNoRowsOverlay noRowsText="Aún no hay conversaciones" />
                 ),
               }}
-              // Desactivamos el overlay de carga de MUI,
-              // pues tenemos skeleton-rows en su lugar
               loading={false}
               columnHeaderHeight={60}
               disableColumnResize
               sx={{
-                "& .MuiDataGrid-cell": {
-                  display: "flex",
-                  alignItems: "center",
-                },
-                "& .MuiDataGrid-columnHeaderTitle": {
-                  fontWeight: 600,
-                  fontFamily: "Inter",
-                  fontSize: "0.875rem",
-                },
-                "& .MuiDataGrid-cell": {
-                  fontFamily: "Inter",
-                  fontSize: "0.875rem",
-                },
-                "& .MuiDataGrid-columnHeaderTitle": {
-                  fontWeight: 600,
-                  fontFamily: "Inter",
-                  fontSize: "0.875rem",
-                },
                 "& .MuiDataGrid-row:hover": {
                   backgroundColor: "#fafafa",
                 },
                 "& .Mui-selected": {
                   backgroundColor: "#fafafa !important",
                 },
-                "& .MuiDataGrid-columnHeaders": {
-                  backgroundColor: "#F7F7F8",
-                  fontSize: "0.875rem",
-                },
-                "& .MuiDataGrid-columnHeader": {
-                  backgroundColor: "#F7F7F8",
-                  fontSize: "0.875rem",
-                },
-                borderColor: colors.gray200,
+                borderColor: colors.gray300,
                 borderRadius: "1rem",
               }}
             />
           </Box>
         </Grid>
 
-        {/* ------------------ Ventana de chat (lado derecho) --------------------- */}
+        {/* Chat a la derecha (sin cambios) */}
         <Grid item xs={4}>
           {isLoading || gridLoading ? (
-            // Skeleton del área de chat mientras carga
             <ConversationSkeleton />
-          ) : messagesWithoutRecomendQuestion &&
-            messagesWithoutRecomendQuestion.length > 0 ? (
-            // Muestra el contenedor de mensajes si hay mensajes
+          ) : messagesWithoutRecomendQuestion.length > 0 ? (
             <Box
-              maxHeight={"75vh"}
-              height={"75vh"}
+              height={"100%"}
+              maxHeight={"80vh"}
               width={"100%"}
               sx={{
                 overflowY: "auto",
-                border: `1px solid ${colors.gray200}`,
+                border: `1px solid ${colors.gray300}`,
                 borderRadius: "1rem",
               }}
             >
@@ -535,7 +407,6 @@ export default function Conversaciones({ isConversations = true }) {
               />
             </Box>
           ) : (
-            // Si no hay mensajes, muestra el texto informativo
             <Box
               maxHeight={"75vh"}
               height={"75vh"}
@@ -544,7 +415,7 @@ export default function Conversaciones({ isConversations = true }) {
               justifyContent="center"
               alignItems="center"
               sx={{
-                border: `1px solid ${colors.gray200}`,
+                border: `1px solid ${colors.gray300}`,
                 borderRadius: "1rem",
                 color: colors.gray500,
                 fontSize: "0.875rem",

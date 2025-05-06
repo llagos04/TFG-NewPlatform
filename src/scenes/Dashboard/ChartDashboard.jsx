@@ -33,7 +33,7 @@ const CustomTooltip = ({ active, payload }) => {
             color: "#000",
           }}
         >
-          Número de mensajes:{" "}
+          Number of messages:{" "}
         </Typography>
         <Typography
           sx={{

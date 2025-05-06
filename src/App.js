@@ -158,12 +158,12 @@ function App({ error }) {
         <Routes>
           {/* ------------ Dashboard -------------------------*/}
           <Route
-            path="/estadisticas"
+            path="/dashboard"
             element={
               <PlatformPage
                 routingPages={routingPages}
-                page="estadisticas"
-                title="Estadísticas"
+                page="dashboard"
+                title="Dashboard"
               />
             }
           >
@@ -171,12 +171,12 @@ function App({ error }) {
           </Route>
           {/* ------------ Interactions -------------------------*/}
           <Route
-            path="/interacciones"
+            path="/interactions"
             element={
               <PlatformPage
                 routingPages={routingPages}
-                page="interacciones"
-                title="Interacciones"
+                page="interactions"
+                title="Interactions"
               />
             }
           >
@@ -184,45 +184,45 @@ function App({ error }) {
           </Route>
           {/* ------------ Reports -------------------------*/}
           <Route
-            path="/informes"
+            path="/reports"
             element={
               <PlatformPage
                 isTabsPage
                 routingPages={routingPages}
-                page="informes"
-                title="Informes"
+                page="reports"
+                title="Reports"
               />
             }
           >
-            <Route index element={<Navigate to="diarios" replace />} />
+            <Route index element={<Navigate to="daily" replace />} />
             <Route
-              path="diarios"
+              path="daily"
               element={
                 <TabsContent
-                  tab="Diarios"
+                  tab="Daily"
                   tabsList={{
-                    Diarios: "diarios",
-                    Semanales: "semanales",
+                    Diarios: "daily",
+                    Semanales: "weekly",
                   }}
                   content={<DailyReports />}
                 />
               }
             />
             <Route
-              path="semanales"
+              path="weekly"
               element={
                 <TabsContent
-                  tab="Semanales"
+                  tab="Weekly"
                   tabsList={{
-                    Diarios: "diarios",
-                    Semanales: "semanales",
+                    Diarios: "daily",
+                    Semanales: "weekly",
                   }}
                   content={<WeeklyReports />}
                 />
               }
             />
           </Route>
-          <Route path="*" element={<Navigate to="/estadisticas" replace />} />
+          <Route path="*" element={<Navigate to="/dashboard" replace />} />
         </Routes>
       )}
     </Router>

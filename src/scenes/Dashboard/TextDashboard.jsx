@@ -21,8 +21,8 @@ const TextBoxDashboard = ({ title, text, height }) => {
         sx={{
           fontSize: "1rem",
           fontFamily: "Inter",
-          color: "#000",
-          fontWeight: 600,
+          color: colors.gray800,
+          fontWeight: 500,
         }}
       >
         {title}
@@ -39,7 +39,7 @@ const TextBoxDashboard = ({ title, text, height }) => {
           sx={{
             fontSize: "0.875rem",
             fontFamily: "Inter",
-            color: colors.gray400,
+            color: colors.gray600,
             whiteSpace: "pre-wrap",
           }}
         >

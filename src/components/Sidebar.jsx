@@ -53,17 +53,17 @@ export const Sidebar = ({ page }) => {
                   >
                     <MenuItemSideBar
                       icon={<PiChartLineUp fontSize="1.3rem" />}
-                      url={"estadisticas"}
+                      url={"dashboard"}
                       page={page}
-                      title_page="Estadísticas"
+                      title_page="Dashboard"
                       onTabClick={handleTabClick}
                     />
 
                     <MenuItemSideBar
                       icon={<PiChats fontSize="1.3rem" />}
-                      url={"interacciones"}
+                      url={"interactions"}
                       page={page}
-                      title_page="Interacciones"
+                      title_page="Interactions"
                       onTabClick={handleTabClick}
                     />
 
@@ -74,9 +74,9 @@ export const Sidebar = ({ page }) => {
                           style={{ marginTop: "-0.125rem" }}
                         />
                       }
-                      url={"informes"}
+                      url={"reports"}
                       page={page}
-                      title_page="Informes"
+                      title_page="Reports"
                       onTabClick={handleTabClick}
                     />
                   </Stack>

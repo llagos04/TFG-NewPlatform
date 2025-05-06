@@ -10,12 +10,12 @@ const PieChartDashboard = ({
   languages = {},
 }) => {
   const languageMap = {
-    ES: "Español",
-    IT: "Italiano",
-    PT: "Portugués",
-    EN: "Inglés",
-    FR: "Francés",
-    CA: "Catalán",
+    ES: "Spanish",
+    IT: "Italian",
+    PT: "Portuguese",
+    EN: "English",
+    FR: "French",
+    CA: "Catalan",
   };
 
   const data = Object.entries(languages)
@@ -96,11 +96,12 @@ const PieChartDashboard = ({
       >
         <Typography
           fontSize="1rem"
-          fontWeight={600}
-          sx={{ fontFamily: "Inter", color: "#000" }}
+          fontWeight={500}
+          sx={{ fontFamily: "Inter", color: colors.gray800 }}
         >
-          Distribución por idiomas
+          Language distribution
         </Typography>
+
         {icon &&
           React.cloneElement(icon, {
             size: iconSize,

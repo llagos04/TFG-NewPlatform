@@ -37,9 +37,23 @@ module.exports = {
   devServer: {
     static: "./dist",
     port: 3000,
+    proxy: [
+      {
+        context: ["/api"],
+        target: "https://aeroassistant.test-by-neural.es:446",
+        secure: false,
+        changeOrigin: true,
+        pathRewrite: { "^/api": "" },
+      },
+    ],
+
+    server: {
+      type: "http",
+    },
     hot: true,
     open: true,
     historyApiFallback: true,
   },
+
   mode: "development",
 };

@@ -123,7 +123,7 @@ export const TextMessage = ({
               : isUser
               ? "0.75rem 0rem 0.75rem 0.75rem"
               : "0rem 0.75rem 0.75rem 0.75rem",
-          maxWidth: isUser ? "77%" : "100%",
+          maxWidth: isUser ? "77%" : "80%",
 
           fontSize: reduceSizeOnMobile ? "0.75rem" : "0.875rem",
           fontFamily: "Inter",
