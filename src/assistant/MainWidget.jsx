@@ -8,8 +8,7 @@ import {
   getMessageStatus,
 } from "../services/api";
 
-import { sampleFlightMessage } from "../../test/sampleFlightMessage";
-import { te } from "date-fns/locale";
+import { useIsMobile } from "../hooks/useIsMobile";
 
 // Helper para pausar la ejecución un número de milisegundos
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -18,16 +17,7 @@ const welcomeMessages = [
   {
     id: "0",
     content: null,
-    response: "Hola",
-    status: "COMPLETED",
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-    threadId: null,
-  },
-  {
-    id: "welcome2",
-    content: null,
-    response: "¿En que puedo ayudarte?",
+    response: "Hi! 👋🏻 What can I do for you?",
     status: "COMPLETED",
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
@@ -48,6 +38,8 @@ export const MainWidget = () => {
     const hasWelcome = parsed.some((m) => m.id === "0");
     return hasWelcome ? parsed : [...welcomeMessages, ...parsed];
   });
+
+  const isMobile = useIsMobile(425);
 
   const [loading, setLoading] = useState(false);
 
@@ -226,7 +218,7 @@ export const MainWidget = () => {
 
   return (
     <>
-      <ChatButton onClick={toggleOpen} isOpen={open} />
+      <ChatButton onClick={toggleOpen} isOpen={open} isMobile={isMobile} />
       <ChatWindow
         visible={open}
         setOpen={() => setOpen(false)}
@@ -235,6 +227,7 @@ export const MainWidget = () => {
         loading={loading}
         streamedResponse={streamedResponse}
         clearConversation={clearConversation}
+        isMobile={isMobile}
       />
     </>
   );

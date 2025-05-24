@@ -18,7 +18,7 @@ import { CiLock } from "react-icons/ci";
 import colors from "../styles/colors";
 import profileImage from "../assets/profile_logo.png";
 
-export const ChatWindowHeader = ({ setOpen, clearConversation }) => {
+export const ChatWindowHeader = ({ setOpen, clearConversation, isMobile }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const menuOpen = Boolean(anchorEl);
 
@@ -39,7 +39,7 @@ export const ChatWindowHeader = ({ setOpen, clearConversation }) => {
           p: "1rem 1.25rem",
           display: "flex",
           alignItems: "center",
-          borderRadius: "16px 16px 0 0",
+          borderRadius: isMobile ? "0" : "16px 16px 0 0",
           backgroundImage: `linear-gradient(100deg, ${alpha(
             colors.primary,
             1

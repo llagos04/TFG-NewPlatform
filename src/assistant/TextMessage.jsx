@@ -45,6 +45,7 @@ export const TextMessage = ({
   rawContent = false,
   reduceSizeOnMobile = false,
   timestamp,
+  isMobile,
 }) => {
   const [hover, setHover] = useState(false);
 
@@ -123,7 +124,7 @@ export const TextMessage = ({
               : isUser
               ? "0.75rem 0rem 0.75rem 0.75rem"
               : "0rem 0.75rem 0.75rem 0.75rem",
-          maxWidth: isUser ? "77%" : "77%",
+          maxWidth: isMobile ? "85%" : isUser ? "77%" : "77%",
 
           fontSize: reduceSizeOnMobile ? "0.75rem" : "0.875rem",
           fontFamily: "Inter",

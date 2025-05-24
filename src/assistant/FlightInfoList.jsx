@@ -132,7 +132,7 @@ const FlightInfoCard = ({ flight, isFirst, isLast }) => {
   );
 };
 
-export const FlightInfoList = ({ flights }) => {
+export const FlightInfoList = ({ flights, isMobile }) => {
   const flightsReversed = [...flights].reverse();
 
   return (
@@ -141,7 +141,7 @@ export const FlightInfoList = ({ flights }) => {
       borderTop={`3px solid ${colors.primary}`}
       borderRadius={"0.75rem"}
       width={"100%"}
-      maxWidth={`calc(77% + 2rem)`}
+      maxWidth={isMobile ? "100%" : `calc(77% + 2rem)`}
     >
       {flightsReversed.map((flight, idx) => (
         <Box key={idx}>

@@ -12,7 +12,7 @@ import { Box, Stack } from "@mui/system";
 import Page404 from "./scenes/Page404";
 import ErrorPage from "./scenes/ErrorPage";
 import { Sidebar } from "./components/Sidebar";
-import { Typography } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import { Dashboard } from "./scenes/Dashboard/Dashboard";
 import Interactions from "./scenes/Interactions/Interactions";
 import { CustomTabs } from "./components/CustomTabs";
@@ -32,6 +32,8 @@ const PlatformPage = ({
   versionDoc = "dark",
   infoDomain = null,
 }) => {
+  const navigate = useNavigate();
+
   return (
     <div className="app">
       <Stack direction="row" height="100vh" width="100%">
@@ -59,25 +61,47 @@ const PlatformPage = ({
             }}
           >
             <Stack spacing={4} height="100%" width="100%">
-              <Stack direction="row">
-                <Stack
-                  width="50rem"
-                  direction="row"
-                  justifyContent="space-between"
-                  alignItems="center"
+              <Stack direction="row" sx={{ alignItems: "flex-end" }}>
+                <Typography
+                  sx={{
+                    marginTop: "1rem",
+                    fontFamily: "Inter",
+                    fontSize: "1.5rem",
+                    fontWeight: "600",
+                    color: "#000",
+                  }}
+                >
+                  {title}
+                </Typography>
+                <Button
+                  variant="outlined"
+                  onClick={() => navigate("/assistant")}
+                  sx={{
+                    borderRadius: "2rem",
+                    textTransform: "none", // sin mayúsculas forzadas
+                    px: "1rem", // padding horizontal
+                    borderColor: colors.primary,
+                    color: colors.primary,
+                    height: "fit-content",
+                    transition: "all 0.3s ease",
+                    "&:hover": {
+                      backgroundColor: colors.primary,
+                      color: "#fff",
+                      boxShadow: `0 2px 8px ${colors.pr}33`,
+                    },
+                    marginLeft: "auto",
+                  }}
                 >
                   <Typography
                     sx={{
-                      marginTop: "1rem",
                       fontFamily: "Inter",
-                      fontSize: "1.5rem",
-                      fontWeight: "600",
-                      color: "#000",
+                      fontSize: "0.875rem",
+                      fontWeight: "500",
                     }}
                   >
-                    {title}
+                    Test assistant
                   </Typography>
-                </Stack>
+                </Button>
               </Stack>
               {/* Scrollable content */}
               <div

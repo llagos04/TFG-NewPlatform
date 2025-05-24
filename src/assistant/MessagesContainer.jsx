@@ -10,6 +10,7 @@ export const MessagesContainer = ({
   sendMessage,
   loading = false,
   streamedResponse = null,
+  isMobile,
 }) => {
   const scrollRef = useRef(null);
 
@@ -47,6 +48,7 @@ export const MessagesContainer = ({
                     message={m.content_sent}
                     isUser
                     timestamp={m.sent_at}
+                    isMobile={isMobile}
                   />
                 </>
               )}
@@ -58,6 +60,7 @@ export const MessagesContainer = ({
                   isUser={false}
                   timestamp={m.sent_at}
                   index={assistantIndex++}
+                  isMobile={isMobile}
                 />
               )}
 
@@ -65,6 +68,7 @@ export const MessagesContainer = ({
               {m.fetched_info?.flights_by_route && (
                 <FlightInfoList
                   flights={JSON.parse(m.fetched_info.flights_by_route)}
+                  isMobile={isMobile}
                 />
               )}
             </React.Fragment>
@@ -78,6 +82,7 @@ export const MessagesContainer = ({
               timestamp={streamedResponse.sent_at}
               isStreaming
               index={0}
+              isMobile={isMobile}
             />
           )}
 
