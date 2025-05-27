@@ -1,8 +1,8 @@
 // src/services/api.js
 import axios from "axios";
 
-const isProd = window.location.hostname === "byneural.ai";
-const BASE_URL = true
+const isProd = window.location.hostname === "aeroassistant.test-by-neural.es";
+const BASE_URL = isProd
   ? "https://aeroassistant.test-by-neural.es:446/api"
   : "/api";
 
