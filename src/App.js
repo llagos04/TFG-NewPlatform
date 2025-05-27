@@ -164,7 +164,7 @@ function App({ error }) {
   };
 
   return (
-    <Router basename={"/"}>
+    <Router basename={"/frontend"}>
       {error ? (
         <ErrorPage errorMessage={error} />
       ) : (

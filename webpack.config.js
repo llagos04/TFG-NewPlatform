@@ -8,6 +8,8 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, "dist"),
     filename: "bundle.js",
+    publicPath: "/frontend/",
+
     clean: true,
     assetModuleFilename: "assets/[hash][ext][query]", // Opcional: define carpeta para imágenes
   },
@@ -50,7 +52,7 @@ module.exports = {
     proxy: [
       {
         context: ["/api"],
-        target: "https://aeroassistant.test-by-neural.es:446",
+        target: "https://aeroassistant.test-by-neural.es:446/api",
         secure: false,
         changeOrigin: true,
         pathRewrite: { "^/api": "" },
@@ -62,7 +64,9 @@ module.exports = {
     },
     hot: true,
     open: true,
-    historyApiFallback: true,
+    historyApiFallback: {
+      index: "/frontend/",
+    },
   },
 
   mode: "development",
