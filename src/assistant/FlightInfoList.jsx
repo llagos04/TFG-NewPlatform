@@ -133,6 +133,11 @@ const FlightInfoCard = ({ flight, isFirst, isLast }) => {
 };
 
 export const FlightInfoList = ({ flights, isMobile }) => {
+  // Si no hay vuelos o el array está vacío, no renderiza nada
+  if (!flights || flights.length === 0) {
+    return null;
+  }
+
   const flightsReversed = [...flights].reverse();
 
   return (

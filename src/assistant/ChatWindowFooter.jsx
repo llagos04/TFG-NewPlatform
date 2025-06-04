@@ -10,8 +10,13 @@ import {
 import { IoMdSend } from "react-icons/io";
 import { TextField } from "@mui/material";
 import { styled } from "@mui/system";
+import { PiMicrophone } from "react-icons/pi";
+import {
+  createAudioRecorder,
+  transcribeAudio,
+} from "../utils/audioTranscriber";
 
-const CustomTextField = styled(TextField)(({ theme }) => ({
+const CustomTextFieldStyled = styled(TextField)(({ theme }) => ({
   "& .MuiOutlinedInput-root": {
     height: "3.1rem",
     borderRadius: "0.7rem",
@@ -43,29 +48,93 @@ const CustomTextField = styled(TextField)(({ theme }) => ({
   },
 }));
 
-const TextfieldChatbot = ({
+const CustomTextField = ({
   text,
-  setText,
+  setText, // NO lo pases al <TextField />
   disabled,
-  handleSendMessage,
+  handleSendMessage, // NO lo pases al <TextField />
+  language,
+  isMobile,
+  placeholder, // <-- sí puedes pasarlo
+}) => {
+  // Solo usa text, setText, handleSendMessage, etc. para la lógica interna:
+
+  const handleChange = (event) => setText(event.target.value);
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter") handleSendMessage();
+  };
+
+  return (
+    <CustomTextFieldStyled
+      value={text}
+      onChange={handleChange}
+      onKeyPress={handleKeyPress}
+      disabled={disabled}
+      fullWidth
+      variant="outlined"
+      placeholder={placeholder}
+      InputProps={{
+        sx: { fontFamily: "Inter" },
+        autoComplete: "off",
+        inputMode: "text",
+      }}
+    />
+  );
+};
+
+export default CustomTextField;
+
+export const ChatWindowFooter = ({
+  sendMessage,
+  loading,
+  active,
   language,
   isMobile,
 }) => {
-  const inputRef = useRef(null);
-  // Si autoFocus es true, ponemos el foco en el campo de texto
-  useEffect(() => {
-    if (!disabled && inputRef.current && !isMobile) {
-      inputRef.current.focus();
-    }
-  }, [disabled]);
+  const [text, setText] = useState("");
+  const [recording, setRecording] = useState(false);
+  const [processing, setProcessing] = useState(false);
+  const [placeholder, setPlaceholder] = useState();
+  const recorderRef = useRef(null);
 
-  const handleChange = (event) => {
-    setText(event.target.value);
+  const handleSendMessage = () => {
+    if (text.trim() && active && !recording && !processing) {
+      sendMessage(text.trim());
+      setText("");
+    }
   };
 
-  const handleKeyPress = (event) => {
-    if (event.key === "Enter") {
-      handleSendMessage();
+  const handleMicrophoneClick = async () => {
+    if (!recording && !processing) {
+      // Empezar a grabar
+      try {
+        recorderRef.current = createAudioRecorder();
+        await recorderRef.current.start();
+        setRecording(true);
+        setPlaceholder("Recording...");
+        setText(""); // Limpia campo texto
+      } catch (err) {
+        alert("Error al iniciar la grabación: " + err.message);
+      }
+    } else if (recording) {
+      // Detener y transcribir
+      setRecording(false);
+      setProcessing(true);
+      setPlaceholder("Processing audio...");
+      setText(""); // Limpia campo texto
+      try {
+        const blob = await recorderRef.current.stop();
+        const transcript = await transcribeAudio(blob);
+        setProcessing(false);
+        setPlaceholder(); // Vuelve a normal al acabar
+        if (transcript && transcript.trim()) {
+          sendMessage(transcript.trim()); // ENVÍA directamente
+        }
+      } catch (err) {
+        setProcessing(false);
+        setPlaceholder();
+        alert("Error al transcribir: " + err.message);
+      }
     }
   };
 
@@ -79,55 +148,12 @@ const TextfieldChatbot = ({
   };
 
   return (
-    <CustomTextField
-      inputRef={inputRef} // Asignamos el ref al campo de texto
-      disabled={disabled}
-      fullWidth
-      value={text}
-      onChange={handleChange}
-      onKeyPress={handleKeyPress}
-      variant="outlined"
-      placeholder={language ? textMappings[language] : textMappings["ES"]}
-      InputProps={{
-        sx: {
-          fontFamily: "Inter",
-        },
-        autoComplete: "off",
-        inputMode: "text",
-      }}
-    />
-  );
-};
-
-export const ChatWindowFooter = ({
-  sendMessage,
-  loading,
-  active,
-  language,
-  isMobile,
-}) => {
-  const [text, setText] = useState("");
-
-  const handleSendMessage = () => {
-    if (text.trim() && active) {
-      sendMessage(text.trim());
-      setText("");
-    }
-  };
-
-  return (
     <Box
       padding="0rem 1rem 0.2rem 1rem"
-      sx={{
-        backgroundColor: "white",
-        borderRadius: "0 0 16px 16px",
-      }}
+      sx={{ backgroundColor: "white", borderRadius: "0 0 16px 16px" }}
     >
       <Stack>
-        {/* Divider above the input */}
         <Divider sx={{ zIndex: 1 }} />
-
-        {/* Input + Send button row */}
         <Stack
           direction="row"
           justifyContent="space-between"
@@ -135,26 +161,33 @@ export const ChatWindowFooter = ({
           mt="0.3rem"
           mb="0.5rem"
         >
-          <TextfieldChatbot
+          <CustomTextField
             text={text}
             setText={setText}
-            disabled={loading || !active}
+            disabled={loading || !active || recording || processing}
             handleSendMessage={handleSendMessage}
             language={language}
             isMobile={isMobile}
+            placeholder={
+              placeholder ||
+              (language ? textMappings[language] : textMappings["ES"])
+            }
           />
           <IconButton
             onClick={handleSendMessage}
             disabled={loading || !active}
-            sx={{
-              color: text.trim() ? "#c30433" : "#9a9a9a",
-            }}
+            sx={{ color: text.trim() ? "#c30433" : "#9a9a9a" }}
           >
             <IoMdSend size="1.75rem" />
           </IconButton>
+          <IconButton
+            onClick={handleMicrophoneClick}
+            disabled={loading || !active}
+            sx={{ color: recording ? "#c30433" : "#9a9a9a" }}
+          >
+            <PiMicrophone size="1.75rem" />
+          </IconButton>
         </Stack>
-
-        {/* Footer credit */}
         <Typography
           variant="body2"
           component="div"
@@ -176,9 +209,7 @@ export const ChatWindowFooter = ({
                 color: "#c30433",
                 fontWeight: 600,
                 textDecoration: "none",
-                "&:hover": {
-                  textDecoration: "underline",
-                },
+                "&:hover": { textDecoration: "underline" },
               }}
             >
               UPC

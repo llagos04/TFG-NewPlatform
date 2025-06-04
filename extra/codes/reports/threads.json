@@ -1,0 +1,414 @@
+[
+  {
+    "thread_id": 1,
+    "conversation": [
+      {
+        "role": "User",
+        "message": "Hola, ¿puedes ayudarme? Acabo de llegar de un vuelo desde Bogotá."
+      },
+      {
+        "role": "Assistant",
+        "message": "¡Claro! ¿En qué puedo ayudarte con tu llegada desde Bogotá?"
+      },
+      {
+        "role": "User",
+        "message": "No estoy seguro de dónde recoger mi equipaje."
+      },
+      {
+        "role": "Assistant",
+        "message": "Puedes recogerlo en la zona de reclamo de equipaje E de la Terminal Internacional."
+      },
+      {
+        "role": "User",
+        "message": "¿Y cómo llego hasta allí desde donde estoy ahora?"
+      },
+      {
+        "role": "Assistant",
+        "message": "Sigue las señales hacia 'Baggage Claim'. Si estás en otra terminal, toma el Plane Train hasta la Terminal E."
+      }
+    ]
+  },
+  {
+    "thread_id": 2,
+    "conversation": [
+      {
+        "role": "User",
+        "message": "Hi, I missed my flight to Chicago. What can I do now?"
+      },
+      {
+        "role": "Assistant",
+        "message": "I'm sorry to hear that. Please go to your airline's customer service desk for rebooking."
+      },
+      {
+        "role": "User",
+        "message": "Where is the Delta service desk?"
+      },
+      {
+        "role": "Assistant",
+        "message": "Delta's service desk is located in the domestic terminal, near gate T5."
+      },
+      {
+        "role": "User",
+        "message": "Is there a long line usually?"
+      },
+      {
+        "role": "Assistant",
+        "message": "It can be busy during peak hours, but there are self-service kiosks available too."
+      }
+    ]
+  },
+  {
+    "thread_id": 3,
+    "conversation": [
+      {
+        "role": "User",
+        "message": "¿Dónde puedo encontrar un lugar para cambiar dinero?"
+      },
+      {
+        "role": "Assistant",
+        "message": "Hay casas de cambio en las terminales A y E."
+      },
+      {
+        "role": "User",
+        "message": "¿Están abiertas por la noche?"
+      },
+      {
+        "role": "Assistant",
+        "message": "Sí, algunas abren 24 horas, especialmente en la terminal internacional."
+      },
+      {
+        "role": "User",
+        "message": "¿Puedo pagar en dólares si solo tengo pesos colombianos?"
+      },
+      {
+        "role": "Assistant",
+        "message": "En la mayoría de tiendas dentro del aeropuerto, sí puedes pagar con tarjeta o cambiar tu dinero primero."
+      }
+    ]
+  },
+  {
+    "thread_id": 4,
+    "conversation": [
+      {
+        "role": "User",
+        "message": "Is there anywhere I can take a shower in the airport?"
+      },
+      {
+        "role": "Assistant",
+        "message": "Yes, you can access showers in airline lounges like Delta Sky Club."
+      },
+      {
+        "role": "User",
+        "message": "Can I access those lounges without first class?"
+      },
+      {
+        "role": "Assistant",
+        "message": "Yes, you can purchase a day pass or use access through certain credit cards."
+      },
+      {
+        "role": "User",
+        "message": "How much is a day pass roughly?"
+      },
+      {
+        "role": "Assistant",
+        "message": "It’s around $59 USD for Delta Sky Club if space is available."
+      }
+    ]
+  },
+  {
+    "thread_id": 5,
+    "conversation": [
+      {
+        "role": "User",
+        "message": "Hola, ¿puedo llevar comida en mi equipaje de mano?"
+      },
+      {
+        "role": "Assistant",
+        "message": "Sí, puedes llevar comida sólida. Líquidos como sopas o salsas deben ir en envases menores a 100 ml."
+      },
+      {
+        "role": "User",
+        "message": "¿Y frutas?"
+      },
+      {
+        "role": "Assistant",
+        "message": "Las frutas son permitidas en vuelos nacionales. En vuelos internacionales, pueden estar restringidas."
+      },
+      {
+        "role": "User",
+        "message": "Mi vuelo es a Miami."
+      },
+      {
+        "role": "Assistant",
+        "message": "Perfecto, entonces no tendrás problema en llevar fruta contigo en cabina."
+      }
+    ]
+  },
+  {
+    "thread_id": 6,
+    "conversation": [
+      {
+        "role": "User",
+        "message": "Hi, can I take the MARTA train to downtown from here?"
+      },
+      {
+        "role": "Assistant",
+        "message": "Absolutely. MARTA’s airport station is just outside the main terminal."
+      },
+      {
+        "role": "User",
+        "message": "Where does it stop in downtown?"
+      },
+      {
+        "role": "Assistant",
+        "message": "You can get off at Peachtree Center or Five Points stations."
+      },
+      {
+        "role": "User",
+        "message": "Is it safe at night?"
+      },
+      {
+        "role": "Assistant",
+        "message": "Generally yes, but we recommend avoiding empty cars late at night and staying aware."
+      }
+    ]
+  },
+  {
+    "thread_id": 7,
+    "conversation": [
+      {
+        "role": "User",
+        "message": "¿Sabes si puedo cargar mi celular en las puertas de embarque?"
+      },
+      {
+        "role": "Assistant",
+        "message": "Sí, hay estaciones de carga disponibles en casi todas las puertas."
+      },
+      {
+        "role": "User",
+        "message": "¿Necesito mi propio cargador?"
+      },
+      {
+        "role": "Assistant",
+        "message": "Sí, es recomendable llevar tu cable. Hay puertos USB y enchufes estándar disponibles."
+      }
+    ]
+  },
+  {
+    "thread_id": 8,
+    "conversation": [
+      {
+        "role": "User",
+        "message": "Do I need to remove electronics at the security checkpoint?"
+      },
+      {
+        "role": "Assistant",
+        "message": "Yes, laptops and tablets should be removed and placed in separate bins."
+      },
+      {
+        "role": "User",
+        "message": "What about if I have TSA PreCheck?"
+      },
+      {
+        "role": "Assistant",
+        "message": "With TSA PreCheck, you usually don’t need to remove electronics or shoes."
+      }
+    ]
+  },
+  {
+    "thread_id": 9,
+    "conversation": [
+      {
+        "role": "User",
+        "message": "¿Dónde puedo encontrar un cajero automático en esta terminal?"
+      },
+      {
+        "role": "Assistant",
+        "message": "Hay varios cajeros automáticos ubicados cerca de las áreas de descanso y las puertas principales."
+      },
+      {
+        "role": "User",
+        "message": "¿Cobran comisión?"
+      },
+      {
+        "role": "Assistant",
+        "message": "Depende de tu banco, pero el cajero también puede aplicar un cargo adicional."
+      },
+      {
+        "role": "User",
+        "message": "¿Cuál es el límite de retiro?"
+      },
+      {
+        "role": "Assistant",
+        "message": "Eso depende."
+      }
+    ]
+  },
+  {
+    "thread_id": 10,
+    "conversation": [
+      {
+        "role": "User",
+        "message": "Is there a hotel inside the airport?"
+      },
+      {
+        "role": "Assistant",
+        "message": "Yes, the Atlanta Airport Marriott Gateway is connected via SkyTrain."
+      },
+      {
+        "role": "User",
+        "message": "How do I take the SkyTrain?"
+      },
+      {
+        "role": "Assistant",
+        "message": "Follow signs to the Rental Car Center, the SkyTrain leaves from there every 3 minutes."
+      },
+      {
+        "role": "User",
+        "message": "Is it free?"
+      },
+      {
+        "role": "Assistant",
+        "message": "Yes, the SkyTrain is free to use for all passengers and visitors."
+      },
+      {
+        "role": "User",
+        "message": "Can I take it if I’m not renting a car?"
+      },
+      {
+        "role": "Assistant",
+        "message": "You can find more information on the SkyTrain at the airport website."
+      }
+    ]
+  },
+  {
+    "thread_id": 11,
+    "conversation": [
+      {
+        "role": "User",
+        "message": "¿Cuál es el procedimiento para objetos perdidos?"
+      },
+      {
+        "role": "Assistant",
+        "message": "Depende del objeto. Visite un mostrador."
+      }
+    ]
+  },
+  {
+    "thread_id": 12,
+    "conversation": [
+      {
+        "role": "User",
+        "message": "Hi, where can I file a complaint about a TSA officer?"
+      },
+      {
+        "role": "Assistant",
+        "message": "Sorry to hear that. You can report it somewhere."
+      }
+    ]
+  },
+  {
+    "thread_id": 13,
+    "conversation": [
+      {
+        "role": "User",
+        "message": "Hola, ¿puedo llevar mi planta en la cabina?"
+      },
+      {
+        "role": "Assistant",
+        "message": "Eh... eso puede ser complicado."
+      }
+    ]
+  },
+  {
+    "thread_id": 14,
+    "conversation": [
+      {
+        "role": "User",
+        "message": "Is there any assistance for elderly passengers?"
+      },
+      {
+        "role": "Assistant",
+        "message": "There might be. Check with the airline."
+      }
+    ]
+  },
+  {
+    "thread_id": 15,
+    "conversation": [
+      {
+        "role": "User",
+        "message": "¿Tienen duchas disponibles después del control de seguridad?"
+      },
+      {
+        "role": "Assistant",
+        "message": "Podría ser que en alguna sala VIP."
+      }
+    ]
+  },
+  {
+    "thread_id": 16,
+    "conversation": [
+      {
+        "role": "User",
+        "message": "Can I get a refund for my parking reservation?"
+      },
+      {
+        "role": "Assistant",
+        "message": "Maybe. It depends on things."
+      }
+    ]
+  },
+  {
+    "thread_id": 17,
+    "conversation": [
+      {
+        "role": "User",
+        "message": "Hola, ¿hay alguna capilla o lugar para rezar?"
+      },
+      {
+        "role": "Assistant",
+        "message": "No estoy seguro, tal vez sí."
+      }
+    ]
+  },
+  {
+    "thread_id": 18,
+    "conversation": [
+      {
+        "role": "User",
+        "message": "Hi, what do I do if I lost my ID before my flight?"
+      },
+      {
+        "role": "Assistant",
+        "message": "That's a tricky situation."
+      }
+    ]
+  },
+  {
+    "thread_id": 19,
+    "conversation": [
+      {
+        "role": "User",
+        "message": "¿Dónde puedo calentar comida para mi bebé?"
+      },
+      {
+        "role": "Assistant",
+        "message": "Probablemente en algún restaurante."
+      }
+    ]
+  },
+  {
+    "thread_id": 20,
+    "conversation": [
+      {
+        "role": "User",
+        "message": "Is there a lounge that accepts Priority Pass in Terminal T?"
+      },
+      {
+        "role": "Assistant",
+        "message": "Hmm, maybe, but I’m not sure exactly."
+      }
+    ]
+  }
+]

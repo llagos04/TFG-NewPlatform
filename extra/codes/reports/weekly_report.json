@@ -1,0 +1,62 @@
+{
+    "missing_information": [
+        {
+            "recommendation": "Ask user for current location before providing directions.",
+            "conversation_id": ["1"]
+        },
+        {
+            "recommendation": "Provide definitive information about chapel locations at the airport.",
+            "conversation_id": ["17"]
+        }
+    ],
+    "incomplete_answer": [
+        {
+            "recommendation": "Include peak hours and self-service kiosk locations in the response.",
+            "conversation_id": ["2"]
+        },
+        {
+            "recommendation": "Include specific withdrawal limit details for ATMs.",
+            "conversation_id": ["9"]
+        },
+        {
+            "recommendation": "Provide direct information on SkyTrain's accessibility for non-renters.",
+            "conversation_id": ["10"]
+        },
+        {
+            "recommendation": "Include detailed steps for reporting lost items.",
+            "conversation_id": ["11"]
+        },
+        {
+            "recommendation": "Provide specific contact information for filing complaints against TSA officers.",
+            "conversation_id": ["12"]
+        },
+        {
+            "recommendation": "Provide specific regulations for bringing plants in cabin.",
+            "conversation_id": ["13"]
+        },
+        {
+            "recommendation": "List available assistance options for elderly passengers.",
+            "conversation_id": ["14"]
+        },
+        {
+            "recommendation": "Provide specific locations of showers after security.",
+            "conversation_id": ["15"]
+        },
+        {
+            "recommendation": "Clarify conditions for obtaining a parking reservation refund.",
+            "conversation_id": ["16"]
+        },
+        {
+            "recommendation": "Outline specific steps to take after losing an ID before a flight.",
+            "conversation_id": ["18"]
+        },
+        {
+            "recommendation": "Provide specific restaurant locations for heating baby food.",
+            "conversation_id": ["19"]
+        },
+        {
+            "recommendation": "Confirm the existence of the lounge in Terminal T.",
+            "conversation_id": ["20"]
+        }
+    ]
+}

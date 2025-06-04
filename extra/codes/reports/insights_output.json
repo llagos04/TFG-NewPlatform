@@ -1,0 +1,192 @@
+[
+  {
+    "thread_id": 1,
+    "summary": "User seeks assistance with baggage claim after arriving from Bogotá, and Assistant provides directions to the baggage claim area.",
+    "topic": "Baggage",
+    "issues": [
+      {
+        "type": "Missing information",
+        "description": "User's current location is not specified, which could affect the clarity of directions."
+      }
+    ]
+  },
+  {
+    "thread_id": 2,
+    "summary": "The user missed their flight to Chicago and seeks assistance, receiving directions to the Delta service desk and information about potential wait times.",
+    "topic": "Flight",
+    "issues": [
+      {
+        "type": "Incomplete answer",
+        "description": "The assistant did not provide information about peak hours or self-service kiosk locations."
+      }
+    ]
+  },
+  {
+    "thread_id": 3,
+    "summary": "The user inquires about currency exchange locations and their hours, as well as payment options with Colombian pesos at the airport.",
+    "topic": "Currency Exchange",
+    "issues": []
+  },
+  {
+    "thread_id": 4,
+    "summary": "The user inquires about shower facilities at the airport and learns about accessing airline lounges and the cost of a day pass.",
+    "topic": "Facilities",
+    "issues": []
+  },
+  {
+    "thread_id": 5,
+    "summary": "The user inquires about carrying food in hand luggage, specifically fruits, and receives confirmation that it's allowed for their domestic flight to Miami.",
+    "topic": "Baggage",
+    "issues": []
+  },
+  {
+    "thread_id": 6,
+    "summary": "The user inquires about taking the MARTA train to downtown, its stops, and safety at night, receiving helpful responses from the assistant.",
+    "topic": "Transportation",
+    "issues": []
+  },
+  {
+    "thread_id": 7,
+    "summary": "User inquires about charging their phone at the boarding gates, and Assistant confirms availability and advises bringing their own cable.",
+    "topic": "Facilities",
+    "issues": []
+  },
+  {
+    "thread_id": 8,
+    "summary": "The user inquires about the removal of electronics at security, and the assistant provides information for both standard and TSA PreCheck procedures.",
+    "topic": "Security",
+    "issues": []
+  },
+  {
+    "thread_id": 9,
+    "summary": "The user inquires about the location of ATMs, fees, and withdrawal limits at ATL. The assistant provides partial information.",
+    "topic": "Facilities",
+    "issues": [
+      {
+        "type": "Incomplete answer",
+        "description": "The assistant did not provide specific information about the withdrawal limit."
+      }
+    ]
+  },
+  {
+    "thread_id": 10,
+    "summary": "The user inquires about the SkyTrain and its accessibility, receiving information about its location, cost, and usage for non-renters.",
+    "topic": "Transportation",
+    "issues": [
+      {
+        "type": "Incomplete answer",
+        "description": "The assistant did not provide direct information about the SkyTrain's accessibility for non-renters."
+      }
+    ]
+  },
+  {
+    "thread_id": 11,
+    "summary": "The user inquires about the procedure for lost items, and the assistant suggests visiting a counter without providing detailed information.",
+    "topic": "Baggage",
+    "issues": [
+      {
+        "type": "Incomplete answer",
+        "description": "The assistant did not provide specific details on how to report or retrieve lost items."
+      }
+    ]
+  },
+  {
+    "thread_id": 12,
+    "summary": "The user seeks to file a complaint about a TSA officer, but the assistant provides an incomplete response without specific guidance.",
+    "topic": "Security",
+    "issues": [
+      {
+        "type": "Incomplete answer",
+        "description": "The assistant fails to provide specific information on where to file the complaint."
+      }
+    ]
+  },
+  {
+    "thread_id": 13,
+    "summary": "The user inquires about bringing a plant in the cabin, and the assistant responds with uncertainty about the rules.",
+    "topic": "Transportation",
+    "issues": [
+      {
+        "type": "Incomplete answer",
+        "description": "The assistant does not provide clear information on whether bringing a plant is allowed or the specific regulations."
+      }
+    ]
+  },
+  {
+    "thread_id": 14,
+    "summary": "The user inquires about assistance for elderly passengers, and the assistant suggests checking with the airline for more information.",
+    "topic": "Facilities",
+    "issues": [
+      {
+        "type": "Incomplete answer",
+        "description": "The assistant does not provide specific details about available assistance options for elderly passengers."
+      }
+    ]
+  },
+  {
+    "thread_id": 15,
+    "summary": "User inquires about the availability of showers after security, and the Assistant suggests they might be in a VIP lounge.",
+    "topic": "Facilities",
+    "issues": [
+      {
+        "type": "Incomplete answer",
+        "description": "The Assistant did not provide specific locations or further details about the availability of showers."
+      }
+    ]
+  },
+  {
+    "thread_id": 16,
+    "summary": "User inquires about a refund for a parking reservation, but the Assistant provides an unclear response regarding the conditions for a refund.",
+    "topic": "Parking",
+    "issues": [
+      {
+        "type": "Incomplete answer",
+        "description": "The Assistant's response lacks specific information about the conditions for obtaining a refund."
+      }
+    ]
+  },
+  {
+    "thread_id": 17,
+    "summary": "The user inquires about the presence of a chapel or prayer space at the airport, but the assistant is uncertain.",
+    "topic": "Facilities",
+    "issues": [
+      {
+        "type": "Missing information",
+        "description": "The assistant fails to provide a definitive answer or direct the user to a location."
+      }
+    ]
+  },
+  {
+    "thread_id": 18,
+    "summary": "The user inquires about the steps to take after losing their ID before a flight, and the assistant acknowledges the difficulty of the situation.",
+    "topic": "Security",
+    "issues": [
+      {
+        "type": "Incomplete answer",
+        "description": "The assistant does not provide specific guidance on what to do about the lost ID."
+      }
+    ]
+  },
+  {
+    "thread_id": 19,
+    "summary": "User inquires about where to heat food for their baby, and Assistant suggests a restaurant as a probable option.",
+    "topic": "Facilities",
+    "issues": [
+      {
+        "type": "Incomplete answer",
+        "description": "The Assistant's response lacks specific locations or details on where to find a restaurant that can heat food."
+      }
+    ]
+  },
+  {
+    "thread_id": 20,
+    "summary": "User inquires about a lounge accepting Priority Pass in Terminal T, but Assistant is uncertain and cannot provide a definitive answer.",
+    "topic": "Facilities",
+    "issues": [
+      {
+        "type": "Incomplete answer",
+        "description": "Assistant does not provide specific information about the lounge or confirm its existence."
+      }
+    ]
+  }
+]

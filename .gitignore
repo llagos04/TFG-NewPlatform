@@ -1,1 +1,4 @@
 /node_modules
+/extra/codes/audioToText/.env
+/extra/codes/reports/.env
+/extra/codes/reports/env

@@ -55,11 +55,13 @@ module.exports = {
         changeOrigin: true,
         pathRewrite: { "^/api": "" },
       },
+      {
+        context: ["/transcribe"],
+        target: "http://localhost:5000",
+        changeOrigin: true,
+      },
     ],
-
-    server: {
-      type: "http",
-    },
+    server: { type: "http" },
     hot: true,
     open: true,
     historyApiFallback: true,
