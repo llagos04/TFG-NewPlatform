@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import colors from "./styles/colors";
 import {
-  HashRouter as Router,
+  BrowserRouter as Router,
   Routes,
   Route,
   Outlet,
@@ -164,7 +164,7 @@ function App({ error }) {
   };
 
   return (
-    <Router basename={"/"}>
+    <Router basename={"/frontend"}>
       {error ? (
         <ErrorPage errorMessage={error} />
       ) : (

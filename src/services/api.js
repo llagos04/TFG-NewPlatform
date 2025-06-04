@@ -1,17 +1,17 @@
 // src/services/api.js
 import axios from "axios";
 
-const isProd = window.location.hostname === "byneural.ai";
+const isProd = window.location.hostname === "aeroassistant.test-by-neural.es";
 const BASE_URL = isProd
-  ? "https://aeroassistant.test-by-neural.es:446"
+  ? "https://aeroassistant.test-by-neural.es:446/api"
   : "/api";
 
 console.log("🧩 BASE_URL:", BASE_URL);
 
 // 1. Crear un nuevo thread
 export const createThread = async () => {
-  console.log("📡 createThread →", `${BASE_URL}/threads`);
-  const res = await axios.post(`${BASE_URL}/threads`);
+  console.log("📡 createThread →", `${BASE_URL}/threads/`);
+  const res = await axios.post(`${BASE_URL}/threads/`);
   console.log("✅ createThread response →", res.data);
   return res.data;
 };
