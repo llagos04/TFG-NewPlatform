@@ -1,35 +1,38 @@
 import React, { useState, useEffect } from "react";
 import { PiGear, PiMagnifyingGlass } from "react-icons/pi";
 
-const LoaderFeedback = () => {
+const translations = {
+  EN: ["Analyzing...", "Searching for information..."],
+  ES: ["Analizando...", "Buscando información..."],
+  FR: ["Analyse en cours...", "Recherche d'informations..."],
+  DE: ["Analysiere...", "Informationen werden gesucht..."],
+  IT: ["Analisi in corso...", "Ricerca di informazioni..."],
+  CA: ["Analitzant...", "Cercant informació..."],
+};
+
+const LoaderFeedback = ({ language = "EN" }) => {
   const [isSearching, setIsSearching] = useState(true);
   const [popClass, setPopClass] = useState("popIn");
   const [textOpacity, setTextOpacity] = useState(1);
-  const [displayText, setDisplayText] = useState("Analyzing...");
+
+  const texts = translations[language] || translations.EN;
+  const [displayText, setDisplayText] = useState(texts[0]);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      // 1. Fade out del texto y pop out del icono
       setTextOpacity(0);
       setPopClass("popOut");
 
       setTimeout(() => {
-        // 2. Alternar estado
         setIsSearching((prev) => !prev);
-        // 3. Cambiar el texto
-        setDisplayText((prev) =>
-          prev === "Analyzing..."
-            ? "Searching for information..."
-            : "Analyzing..."
-        );
-        // 4. Pop in del icono y fade in del texto
+        setDisplayText((prev) => (prev === texts[0] ? texts[1] : texts[0]));
         setPopClass("popIn");
         setTextOpacity(1);
-      }, 500); // coincide con la duración de popOut
+      }, 500);
     }, 4000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [texts]);
 
   return (
     <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>

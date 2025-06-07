@@ -1,4 +1,3 @@
-// src/utils/transformMessages.js
 export const transformMessages = (rawMessages) => {
   const flat = rawMessages.flatMap((msg) => {
     const userMsg = {
@@ -11,11 +10,12 @@ export const transformMessages = (rawMessages) => {
           content_received: msg.response,
           sent_at: msg.updatedAt,
           actions: msg.actions,
-          fetched_info: msg.fetched_info, // <-- aquí
+          processing: msg.processing, // 👈 Mantén todo intacto
         }
       : null;
     return assistantMsg ? [userMsg, assistantMsg] : [userMsg];
   });
+
   console.log("── transformMessages output:", flat);
   return flat;
 };

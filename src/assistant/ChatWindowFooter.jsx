@@ -50,15 +50,11 @@ const CustomTextFieldStyled = styled(TextField)(({ theme }) => ({
 
 const CustomTextField = ({
   text,
-  setText, // NO lo pases al <TextField />
+  setText,
   disabled,
-  handleSendMessage, // NO lo pases al <TextField />
-  language,
-  isMobile,
-  placeholder, // <-- sí puedes pasarlo
+  handleSendMessage,
+  placeholder,
 }) => {
-  // Solo usa text, setText, handleSendMessage, etc. para la lógica interna:
-
   const handleChange = (event) => setText(event.target.value);
   const handleKeyPress = (event) => {
     if (event.key === "Enter") handleSendMessage();
@@ -97,6 +93,47 @@ export const ChatWindowFooter = ({
   const [placeholder, setPlaceholder] = useState();
   const recorderRef = useRef(null);
 
+  const texts = {
+    EN: {
+      placeholder: "Write your message here...",
+      recording: "Recording...",
+      processing: "Processing audio...",
+      footer: "DEVELOPED FOR",
+    },
+    ES: {
+      placeholder: "Escribe tu mensaje aquí...",
+      recording: "Grabando...",
+      processing: "Procesando audio...",
+      footer: "DESARROLLADO PARA",
+    },
+    FR: {
+      placeholder: "Écrivez votre message ici...",
+      recording: "Enregistrement...",
+      processing: "Traitement de l'audio...",
+      footer: "DÉVELOPPÉ POUR",
+    },
+    IT: {
+      placeholder: "Scrivi il tuo messaggio qui...",
+      recording: "Registrazione...",
+      processing: "Elaborazione audio...",
+      footer: "SVILUPPATO PER",
+    },
+    CA: {
+      placeholder: "Escriu el teu missatge aquí...",
+      recording: "Gravant...",
+      processing: "Processant àudio...",
+      footer: "DESENVOLUPAT PER",
+    },
+    PT: {
+      placeholder: "Escreva sua mensagem aqui...",
+      recording: "Gravando...",
+      processing: "Processando áudio...",
+      footer: "DESENVOLVIDO PARA",
+    },
+  };
+
+  const t = texts[language] || texts["EN"];
+
   const handleSendMessage = () => {
     if (text.trim() && active && !recording && !processing) {
       sendMessage(text.trim());
@@ -106,29 +143,27 @@ export const ChatWindowFooter = ({
 
   const handleMicrophoneClick = async () => {
     if (!recording && !processing) {
-      // Empezar a grabar
       try {
         recorderRef.current = createAudioRecorder();
         await recorderRef.current.start();
         setRecording(true);
-        setPlaceholder("Recording...");
-        setText(""); // Limpia campo texto
+        setPlaceholder(t.recording);
+        setText("");
       } catch (err) {
         alert("Error al iniciar la grabación: " + err.message);
       }
     } else if (recording) {
-      // Detener y transcribir
       setRecording(false);
       setProcessing(true);
-      setPlaceholder("Processing audio...");
-      setText(""); // Limpia campo texto
+      setPlaceholder(t.processing);
+      setText("");
       try {
         const blob = await recorderRef.current.stop();
         const transcript = await transcribeAudio(blob);
         setProcessing(false);
-        setPlaceholder(); // Vuelve a normal al acabar
+        setPlaceholder();
         if (transcript && transcript.trim()) {
-          sendMessage(transcript.trim()); // ENVÍA directamente
+          sendMessage(transcript.trim());
         }
       } catch (err) {
         setProcessing(false);
@@ -136,15 +171,6 @@ export const ChatWindowFooter = ({
         alert("Error al transcribir: " + err.message);
       }
     }
-  };
-
-  const textMappings = {
-    EN: "Write your message here...",
-    ES: "Escribe tu mensaje aquí...",
-    FR: "Écrivez votre message ici...",
-    IT: "Scrivi il tuo messaggio qui...",
-    CA: "Escriu el teu missatge aquí...",
-    PT: "Escreva sua mensagem aqui...",
   };
 
   return (
@@ -166,12 +192,7 @@ export const ChatWindowFooter = ({
             setText={setText}
             disabled={loading || !active || recording || processing}
             handleSendMessage={handleSendMessage}
-            language={language}
-            isMobile={isMobile}
-            placeholder={
-              placeholder ||
-              (language ? textMappings[language] : textMappings["ES"])
-            }
+            placeholder={placeholder || t.placeholder}
           />
           <IconButton
             onClick={handleSendMessage}
@@ -199,7 +220,7 @@ export const ChatWindowFooter = ({
             mt: "0.25rem",
           }}
         >
-          DEVELOPED FOR{" "}
+          {t.footer}{" "}
           <Box component="span" sx={{ fontSize: "0.75rem" }}>
             <Link
               href="https://www.upc.edu/ca"

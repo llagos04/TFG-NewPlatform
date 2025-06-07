@@ -18,6 +18,8 @@ export const ChatWindow = ({
   streamedResponse,
   clearConversation,
   isMobile,
+  language,
+  setLanguage,
 }) => {
   const viewportHeight = useViewportHeight();
 
@@ -44,6 +46,8 @@ export const ChatWindow = ({
         setOpen={setOpen}
         clearConversation={clearConversation}
         isMobile={isMobile}
+        language={language}
+        setLanguage={setLanguage}
       />
 
       {/* Contenedor de mensajes */}
@@ -53,6 +57,7 @@ export const ChatWindow = ({
         loading={loading}
         streamedResponse={streamedResponse}
         isMobile={isMobile}
+        language={language}
       />
 
       {/* Footer */}
@@ -60,7 +65,7 @@ export const ChatWindow = ({
         sendMessage={sendMessage}
         loading={loading}
         active={!loading}
-        language="EN"
+        language={language}
         isMobile={false}
       />
     </Box>

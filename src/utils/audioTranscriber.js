@@ -34,7 +34,11 @@ export function createAudioRecorder() {
 export const transcribeAudio = async (blob) => {
   const form = new FormData();
   form.append("audio", blob, "recording.webm");
-  const resp = await fetch("/transcribe", { method: "POST", body: form });
+  const resp = await fetch("/api/audio/transcribe", {
+  method: "POST",
+  body: form,
+});
+
   if (!resp.ok) throw new Error("Error al transcribir audio");
   const data = await resp.json();
   return data.text;

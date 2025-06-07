@@ -18,7 +18,6 @@ import Interactions from "./scenes/Interactions/Interactions";
 import { CustomTabs } from "./components/CustomTabs";
 import { WeeklyReports } from "./scenes/Reports/WeeklyReports";
 import { DailyReports } from "./scenes/Reports/DailyReports";
-import { NewDashboard } from "./scenes/Dashboard/NewDashboard";
 import { MainWidget } from "./assistant/MainWidget";
 
 const PlatformPage = ({

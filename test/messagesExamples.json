@@ -1,0 +1,83 @@
+[
+  {
+    "id": 4,
+    "content": "Is there any assistance for elderly passengers?",
+    "order": 1,
+    "response": "To provide you with detailed information regarding services for elderly passengers at Atlanta Hartsfield-Jackson International Airport, could you please specify which concourse (A, B, C, D, E, F, T, or the Domestic Terminal) you are inquiring about? This will help me to give you accurate and relevant information. Thank you!",
+    "status": "COMPLETED",
+    "processing": {
+      "Step 1": {
+        "required_info": ["services and general info"],
+        "short_circuit": false,
+        "missing_information": true
+      },
+      "Step 2": null,
+      "Step 3": null,
+      "Step 4": {
+        "final_prompt": "You are an assistant for the Atlanta Hartsfield-Jackson International Airport (KATL). The user has requested information but some necessary details are missing.\n\nInformation category which the client is requesting: [\"services and general info\"]\n\nMissing information for information category requested:\n- \"services and general info\": requires the concourse (A, B, C, D, E, F, T, Domestic Terminal). If not specified, prompt the user to provide it. The airport is always KATL and does not need to be specified or asked for.\n\nCurrent date and time: Thursday, June 5, 2025 at 12:04 PM\n\nPlease respond to the user's query explaining what additional information is needed to provide a complete answer. Be polite and specific about what information is missing. Remember that:\n- For 'services and general info', the airport is always KATL. Only the concourse is required. Never ask for the airport or time for this type.\n- If no airport is specified for other types, we assume they are referring to KATL, and tell them that, but information about other airports is available too.\n- If no date/time is specified for types that require it, the client must provide it.\n\nContext:\n- User's original query: Is there any assistance for elderly passengers?\n- Conversation history: User: Is there any assistance for elderly passengers?",
+        "prompt_template": "MISSING_INFO_PROMPT"
+      }
+    },
+    "error": null,
+    "createdAt": "2025-06-05T16:04:15.000Z",
+    "updatedAt": "2025-06-05T16:04:19.000Z",
+    "threadId": 4
+  },
+  {
+    "id": 5,
+    "content": "flights to Dallas today at 20:00",
+    "order": 1,
+    "response": "Hello! It looks like there is a scheduled flight from Atlanta to Dallas today at 8:35 PM. Here are the details for that flight:\n\n- **Flight Number**: AA 1008\n- **Airline**: American Airlines\n- **Status**: Scheduled\n- **Aircraft**: A21N\n- **Departure Terminal**: N\n- **Departure Gate**: T12\n- **Scheduled Departure Time**: 8:35 PM\n- **Arrival Terminal**: C\n- **Arrival Gate**: C27\n- **Scheduled Arrival Time**: 11:04 PM\n\nThere is currently no delay reported for this flight. If you have any further questions or need assistance with anything else, feel free to ask!",
+    "status": "COMPLETED",
+    "processing": {
+      "Step 1": {
+        "required_info": ["flights by origin and destination"],
+        "short_circuit": false,
+        "missing_information": false
+      },
+      "Step 2": {
+        "flights_by_route": {
+          "end": "2025-06-05T20:59:59Z",
+          "start": "2025-06-05T20:00:00Z",
+          "origin": "KATL",
+          "destination": "DFW"
+        }
+      },
+      "Step 3": {
+        "flights_by_route": "[\n  {\n    \"flightNumber\": \"1008\",\n    \"airline\": \"AA\",\n    \"status\": \"Scheduled\",\n    \"aircraft\": \"A21N\",\n    \"origin\": {\n      \"code\": \"ATL\",\n      \"terminal\": \"N\",\n      \"gate\": \"T12\",\n      \"scheduled\": \"8:35:00 PM\",\n      \"actual\": \"N/A\",\n      \"delay\": 0\n    },\n    \"destination\": {\n      \"code\": \"DFW\",\n      \"terminal\": \"C\",\n      \"gate\": \"C27\",\n      \"scheduled\": \"11:04:00 PM\",\n      \"actual\": \"N/A\",\n      \"delay\": -360\n    }\n  }\n]"
+      },
+      "Step 4": {
+        "final_prompt": "You are an assistant for the Atlanta Hartsfield-Jackson International Airport (KATL). Generate a response to the user's query using the provided information.\n\nUser's query: {user_query}\nConversation history: {conversation_history}\n\nCurrent date and time: {current_datetime}\n\nFetched information:\n{fetched_info}\n\nPlease provide a helpful, informative response that:\n1. Directly addresses the user's query\n2. Uses the fetched information appropriately\n3. Maintains context from the conversation history\n4. Is clear and concise\n5. Uses a friendly, professional tone\n6. Remember that you are specifically assisting with Atlanta Hartsfield-Jackson International Airport (KATL)\n7. Use natural language when referring to dates and times (e.g., \"tomorrow at 3 PM\" instead of \"2024-03-15T15:00:00Z\")\n\nRespond as an Atlanta Airport assistant.\n\nUser query: flights to Dallas today at 20:00\n\nConversation history:\nUser: flights to Dallas today at 20:00\n\nFetched information:\n{\n  \"flights_by_route\": \"[\\n  {\\n    \\\"flightNumber\\\": \\\"1008\\\",\\n    \\\"airline\\\": \\\"AA\\\",\\n    \\\"status\\\": \\\"Scheduled\\\",\\n    \\\"aircraft\\\": \\\"A21N\\\",\\n    \\\"origin\\\": {\\n      \\\"code\\\": \\\"ATL\\\",\\n      \\\"terminal\\\": \\\"N\\\",\\n      \\\"gate\\\": \\\"T12\\\",\\n      \\\"scheduled\\\": \\\"8:35:00 PM\\\",\\n      \\\"actual\\\": \\\"N/A\\\",\\n      \\\"delay\\\": 0\\n    },\\n    \\\"destination\\\": {\\n      \\\"code\\\": \\\"DFW\\\",\\n      \\\"terminal\\\": \\\"C\\\",\\n      \\\"gate\\\": \\\"C27\\\",\\n      \\\"scheduled\\\": \\\"11:04:00 PM\\\",\\n      \\\"actual\\\": \\\"N/A\\\",\\n      \\\"delay\\\": -360\\n    }\\n  }\\n]\"\n}",
+        "prompt_template": "FINAL_RESPONSE_PROMPT"
+      }
+    },
+    "error": null,
+    "createdAt": "2025-06-05T16:06:25.000Z",
+    "updatedAt": "2025-06-05T16:06:37.000Z",
+    "threadId": 5
+  },
+  {
+    "id": 6,
+    "content": "Hi, I missed my flight to Chicago. What can I do now?",
+    "order": 1,
+    "response": "I'm sorry to hear that you missed your flight to Chicago. The best course of action is to head to your airline's customer service desk or contact them directly by phone. They can assist you in rebooking your flight. If there's anything else you need or other questions you might have about the airport, feel free to ask!",
+    "status": "COMPLETED",
+    "processing": {
+      "Step 1": {
+        "required_info": [],
+        "short_circuit": true,
+        "missing_information": false
+      },
+      "Step 2": null,
+      "Step 3": null,
+      "Step 4": {
+        "final_prompt": "You are an assistant for the Atlanta Hartsfield-Jackson International Airport (KATL).\n\nThe user's message does not require any specific airport or flight information, or is not a request for factual data.\n\nYour task:\n- Provide a friendly, concise, and context-aware response to the user's message.\n- If appropriate, offer further assistance or invite the user to ask about flights, weather, delays, or airport services.\n- Do not invent information or answer as if the user asked for airport/flight data.\n\nUser query: Hi, I missed my flight to Chicago. What can I do now?\nConversation history:\nUser: Hi, I missed my flight to Chicago. What can I do now?\n\nRespond as an Atlanta Airport assistant.",
+        "prompt_template": "NO_INFO_REQUIRED_PROMPT"
+      }
+    },
+    "error": null,
+    "createdAt": "2025-06-05T16:07:13.000Z",
+    "updatedAt": "2025-06-05T16:07:16.000Z",
+    "threadId": 6
+  }
+]

@@ -9,10 +9,8 @@ const BASE_URL = isProd
 console.log("🧩 BASE_URL:", BASE_URL);
 
 // 1. Crear un nuevo thread
-export const createThread = async () => {
-  console.log("📡 createThread →", `${BASE_URL}/threads/`);
-  const res = await axios.post(`${BASE_URL}/threads/`);
-  console.log("✅ createThread response →", res.data);
+export const createThread = async (language = "EN") => {
+  const res = await axios.post(`${BASE_URL}/threads/`, { language });
   return res.data;
 };
 

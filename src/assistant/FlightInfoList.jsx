@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Stack, Typography, Chip } from "@mui/material";
+import { Box, Stack, Typography } from "@mui/material";
 import colors from "../styles/colors";
 import { CustomChip } from "../components/CustomChip";
 import DL from "../assets/airlines/DL.png";
@@ -18,32 +18,62 @@ const airlineLogo = {
   YX: YX,
 };
 
+const translations = {
+  EN: {
+    terminal: "Terminal",
+    boardingGate: "Boarding gate",
+    destinationTerminal: "Destination terminal",
+  },
+  ES: {
+    terminal: "Terminal",
+    boardingGate: "Puerta de embarque",
+    destinationTerminal: "Terminal de destino",
+  },
+  FR: {
+    terminal: "Terminale",
+    boardingGate: "Porte d'embarquement",
+    destinationTerminal: "Terminal de destination",
+  },
+  DE: {
+    terminal: "Terminal",
+    boardingGate: "Abflug-Gate",
+    destinationTerminal: "Zielterminal",
+  },
+  IT: {
+    terminal: "Terminal",
+    boardingGate: "Gate d'imbarco",
+    destinationTerminal: "Terminal di destinazione",
+  },
+  CA: {
+    terminal: "Terminal",
+    boardingGate: "Porta d'embarcament",
+    destinationTerminal: "Terminal de destinació",
+  },
+};
+
 const getChipVariant = (statusRaw = "") => {
   const status = statusRaw.toLowerCase();
   if (status.includes("delayed")) return "orange";
   if (status.includes("gate arrival")) return "yellow";
-  /* Scheduled / En Route / On Time … */
   return "green";
 };
 
 const formatTime24 = (time12) => {
   if (!time12) return "-";
-  // separa "hh:mm:ss" de "AM/PM"
   const [time, modifier] = time12.split(" ");
   let [hours, minutes] = time.split(":");
   hours = parseInt(hours, 10);
   if (modifier === "PM" && hours !== 12) hours += 12;
   if (modifier === "AM" && hours === 12) hours = 0;
-  // formatea con dos dígitos
   const H = String(hours).padStart(2, "0");
   const M = String(minutes).padStart(2, "0");
   return `${H}:${M}`;
 };
 
-const FlightInfoCard = ({ flight, isFirst, isLast }) => {
+const FlightInfoCard = ({ flight, isFirst, isLast, language = "EN" }) => {
   const { flightNumber, airline, status, origin, destination } = flight;
-
   const logoSrc = airlineLogo[airline] || airlineLogo.DL;
+  const t = translations[language] || translations.EN;
 
   return (
     <Stack
@@ -103,7 +133,7 @@ const FlightInfoCard = ({ flight, isFirst, isLast }) => {
               color: colors.gray500,
             }}
           >
-            Terminal: {origin.terminal ?? "-"}
+            {t.terminal}: {origin.terminal ?? "-"}
           </Typography>
           <Typography
             sx={{
@@ -112,7 +142,7 @@ const FlightInfoCard = ({ flight, isFirst, isLast }) => {
               color: colors.gray500,
             }}
           >
-            Boarding gate: {origin.gate ?? "-"}
+            {t.boardingGate}: {origin.gate ?? "-"}
           </Typography>
           <Typography
             sx={{
@@ -121,7 +151,7 @@ const FlightInfoCard = ({ flight, isFirst, isLast }) => {
               color: colors.gray500,
             }}
           >
-            Destination terminal: {destination.terminal ?? "-"}
+            {t.destinationTerminal}: {destination.terminal ?? "-"}
           </Typography>
         </Stack>
         <Box sx={{ alignContent: "center", ml: "auto" }}>
@@ -132,8 +162,7 @@ const FlightInfoCard = ({ flight, isFirst, isLast }) => {
   );
 };
 
-export const FlightInfoList = ({ flights, isMobile }) => {
-  // Si no hay vuelos o el array está vacío, no renderiza nada
+export const FlightInfoList = ({ flights, isMobile, language = "EN" }) => {
   if (!flights || flights.length === 0) {
     return null;
   }
@@ -154,6 +183,7 @@ export const FlightInfoList = ({ flights, isMobile }) => {
             flight={flight}
             isFirst={idx === 0}
             isLast={idx === flights.length - 1}
+            language={language}
           />
         </Box>
       ))}

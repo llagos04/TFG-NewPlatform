@@ -17,10 +17,16 @@ export const useThreadsStats = () => {
     setError(null);
 
     try {
-      const response = await axios.get("/api/monitoring/threads-stats");
+      const response = await axios.get("/api/monitoring/threads-stats/");
 
       const data = response.data;
 
+      // Si el backend responde con un error en JSON
+      if (data.error) {
+        throw new Error(data.error);
+      }
+
+      // Mapeo si todo va bien
       const mappedThreads = data.map((thread) => ({
         id: thread.threadId,
         display_thread_id: thread.threadId,
@@ -39,7 +45,7 @@ export const useThreadsStats = () => {
       setThreads(mappedThreads);
     } catch (err) {
       console.error("Error fetching threads:", err);
-      setError(err);
+      setError(err.message || "Unknown error");
     } finally {
       setLoading(false);
     }
